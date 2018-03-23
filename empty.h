@@ -1,6 +1,6 @@
 #include "piece.h"
 
-class Queen: public Piece {
+class Empty: public Piece {
 public:
 	bool isEmpty() override;
 };

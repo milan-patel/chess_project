@@ -1,6 +1,10 @@
 
 class Piece{
+	int row;
+	int column;
+	char type;
+	bool white;
 public:
-	legal_moves()=0;
-	
+	virtual bool canMove(std::string start, std::string end)=0;
+	virtual bool isEmpty()=0;	
 };
