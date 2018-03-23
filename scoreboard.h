@@ -6,3 +6,4 @@ class Scoreboard{
 public:
 	std::string printScore();
 };
+

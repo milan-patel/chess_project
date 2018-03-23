@@ -6,3 +6,4 @@ class TextDisplay {
 public:
 	void notify();
 }; 
+

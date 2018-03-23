@@ -5,3 +5,4 @@ class King: public Piece {
 public:
 	bool isEmpty() override;
 };
+
