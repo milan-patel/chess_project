@@ -6,5 +6,6 @@ class Piece{
 	bool white;
 public:
 	virtual bool canMove(std::string start, std::string end)=0;
-	virtual bool isEmpty()=0;	
+	virtual bool isEmpty()=0;
 };
+

@@ -17,11 +17,14 @@ public:
 	// 
 	void move(std::string start, std::string end); 
 
-	bool isCheck(bool isWhite); // returns whether 
+	bool isCheck(bool isWhite); //  
 	bool isCheckmate();
-	bool isStalemate();
-	std::string sendToDisplay();
+	bool isStalemate(); 
+	std::string sendToDisplay(); 
+	Piece *getPiece(std::string cmd); // returns a pointer to the piece stored at
+	// cmd 
 };
 
 int getPos(std:string cmd); // converts a coordinate in the form of a1 into the 
 // corresponding place 
+
