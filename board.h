@@ -1,4 +1,3 @@
-#include <map>
 #include "scoreboard.h"
 #include "player.h"
 
@@ -13,6 +12,7 @@ class Board {
 	Player *p2;
 
 public:
+	Board(int p1, int p2);
 	void place(char piece, std::string cmd); // only used during setup mode 
 	// 
 	void move(std::string start, std::string end); 
