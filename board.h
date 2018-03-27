@@ -16,17 +16,19 @@ public:
 	~Board();
 	void normalSetup(); // 
 	void place(char piece, const std::string &cmd); // only used during setup mode 
-	bool validBoard(); // only used during setup mode, checks if board is in a valid
+	bool validBoard() const; // only used during setup mode, checks if board is in a valid
 	// setup 
 	void move(const std::string &start, const std::string &end);
-	bool isCheck(bool isWhite); //
-	bool isCheckmate(); 
-	bool isStalemate(); 
-	std::string sendToDisplay(); 
-	Piece *getPiece(const std::string &cmd); // returns a pointer to the piece stored at
-	// cmd 
+	bool isCheck(bool isWhite) const; //
+	bool isCheckmate() const; 
+	bool isStalemate() const; 
+	std::string sendToDisplay() const; 
+	Piece *getPiece(const std::string &cmd) const; // returns a pointer to the piece stored at
+	// cmd
+	const Piece ** &getBoard() const; // provides a read-only copy of the board
+	// for other classes to reference
 private:
-	std::string findKing(bool isWhite);
+	std::string findKing(bool isWhite) const;
 	bool testMove(const std::string &start, const std::string &end);
 };
 
