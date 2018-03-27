@@ -100,7 +100,7 @@ bool Board::testMove(const string &start, const string &end){
 	// false. In either case, the board is mutated back to its original state
 	Piece *p = getPiece(start);
 	Piece *temp = getPiece(end);
-	if(p->canMove(start, end)){
+	if(p->canMove(start, end, getBoard())){
 		Board[getPos(end)] = p;
 		Board[getPos(start)] = new Empty(getPos(start));
 		if(isCheck(isTurnWhite)){
@@ -140,7 +140,7 @@ bool Board::isCheck(bool isWhite){
 	bool flag = false; // flag will change to true if an opposing piece can move
 	// to the space of the King 
 	for(int i=0; i<64; ++i){
-		if(Board[i]->canMove(getCor(i),King)){
+		if(Board[i]->canMove(getCor(i),King, getBoard())){
 			flag = true;
 		}
 	}
@@ -155,6 +155,10 @@ bool Board::isStalemate(){
 	return false;
 }
 
+string Board::sendToDisplay(){
+	return '';
+}
+
 
 string Board::findKing(bool isWhite){
 	char king = 'k';
@@ -167,6 +171,10 @@ string Board::findKing(bool isWhite){
 		}
 	}
 	return "";
+}
+
+const Piece ** &Board::getBoard(){
+	return Board;
 }
 
 
