@@ -1,7 +1,15 @@
+#ifndef ___QUEEN___
+#define ___QUEEN___
+
+#include <string>
 #include "piece.h"
 
 class Queen: public Piece {
 public:
-	bool isEmpty() override;
+	Queen(int pos, bool isWhite);
+	bool canMove(const std::string &start, const std::string &end, const Piece ** &b) const override;
+	char Type() const override;
+	bool isEmpty() const override;
 };
 
+#endif

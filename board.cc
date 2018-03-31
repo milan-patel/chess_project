@@ -1,55 +1,63 @@
 #include <iostream>
 #include <sstream>
+#include "board.h"
 #include "player.h"
+#include "computer.h"
 #include "scoreboard.h"
 #include "piece.h"
 #include "empty.h"
 #include "pawn.h"
+#include "knight.h"
+#include "bishop.h"
 #include "rook.h"
+#include "queen.h"
+#include "king.h"
+#include <string>
+
 
 using namespace std;
 
 
-Board::Board(int player1, int player2): Board{new Piece*[64]}, isTurnWhite{true},
-		inCheck{false}, Scoreboard{Scoreboard()}, p1{new Player()}, p2{new Player()}{
+Board::Board(int player1, int player2): board{new Piece*[64]}, isTurnWhite{true},
+		inCheck{false}, s{new Scoreboard()}, p1{new Player(true)}, p2{new Player(false)}{
 			normalSetup();
 			if(player1 > 0){
 				delete p1;
-				p1 = new Comp(player1);
+				p1 = new Comp(player1, true);
 			} if(player2 > 0){
 				delete p2;
-				p1 = new Comp(player2);
+				p1 = new Comp(player2, false);
 			}
 		}
 
 void Board::normalSetup(){
 	// setting up a new black team
-	Board[0] = new Rook(0,false); // back row
-	Board[1] = new Knight(1,false);
-	Board[2] = new Bishop(2,false);
-	Board[3] = new Queen(3,false);
-	Board[4] = new King(4,false);
-	Board[5] = new Bishop(5,false);
-	Board[6] = new Knight(6,false);
-	Board[7] = new Rook(7, false);
+	board[0] = new Rook(0,false); // back row
+	board[1] = new Knight(1,false);
+	board[2] = new Bishop(2,false);
+	board[3] = new Queen(3,false);
+	board[4] = new King(4,false);
+	board[5] = new Bishop(5,false);
+	board[6] = new Knight(6,false);
+	board[7] = new Rook(7, false);
 	for(int i=8; i < 16; ++i){
-		Board[i] = new Pawn(i,false); // row of pawns
+		board[i] = new Pawn(i,false); // row of pawns
 	}
 	for(int j=16; j < 48; ++j){
-		Board[j] = new Empty(j); // empty space
+		board[j] = new Empty(j); // empty space
 	}
 	// setting up a new white team
 	for(int k=48; k < 56; ++k){
-		Board[k] = new Pawn(k,true); // row of pawns
+		board[k] = new Pawn(k,true); // row of pawns
 	}
-	Board[56] = new Rook(56,true); // back row
-	Board[57] = new Knight(57,true);
-	Board[58] = new Bishop(58,true);
-	Board[59] = new Queen(59,true);
-	Board[60] = new King(60,true);
-	Board[61] = new Bishop(61,true);
-	Board[62] = new Knight(62,true);
-	Board[63] = new Rook(63,true);
+	board[56] = new Rook(56,true); // back row
+	board[57] = new Knight(57,true);
+	board[58] = new Bishop(58,true);
+	board[59] = new Queen(59,true);
+	board[60] = new King(60,true);
+	board[61] = new Bishop(61,true);
+	board[62] = new Knight(62,true);
+	board[63] = new Rook(63,true);
 }
 
 void Board::place(char piece, const string &cmd){ 
@@ -59,27 +67,27 @@ void Board::place(char piece, const string &cmd){
 	if (!isWhite){
 		piece = piece - 'a' + 'A';
 	}
-	if(piece = 'P'){
-		delete Board[index];
-		Board[index] = new Pawn(index, isWhite);
-	} else if(piece = 'R'){
-		delete Board[index];
-		Board[index] = new Rook(index,isWhite);
-	} else if(piece = 'Q'){
-		delete Board[index];
-		Board[index] = new Queen(index,isWhite);
-	} else if(piece = 'B'){
-		delete Board[index];
-		Board[index] = new Bishop(index,isWhite);
-	} else if(piece = 'N'){
-		delete Board[index];
-		Board[index] = new Knight(index,isWhite);
-	} else if(piece = 'K'){
-		delete Board[index];
-		Board[index] = new King(index,isWhite);
-	} else if(piece = 'E'){
-		delete Board[index];
-		Board[index] = new Empty(index);
+	if(piece == 'P'){
+		delete board[index];
+		board[index] = new Pawn(index, isWhite);
+	} else if(piece == 'R'){
+		delete board[index];
+		board[index] = new Rook(index,isWhite);
+	} else if(piece == 'Q'){
+		delete board[index];
+		board[index] = new Queen(index,isWhite);
+	} else if(piece == 'B'){
+		delete board[index];
+		board[index] = new Bishop(index,isWhite);
+	} else if(piece == 'N'){
+		delete board[index];
+		board[index] = new Knight(index,isWhite);
+	} else if(piece == 'K'){
+		delete board[index];
+		board[index] = new King(index,isWhite);
+	} else if(piece == 'E'){
+		delete board[index];
+		board[index] = new Empty(index);
 	}
 }
 
@@ -87,9 +95,9 @@ void Board::place(char piece, const string &cmd){
 
 Board::~Board(){
 	for(int i =0; i < 64;++i){ // deletes all piece pointers in the Board object
-		delete Board[i];
+		delete board[i];
 	}
-	delete [] Board;
+	delete [] board;
 	delete p1;
 	delete p2;
 }
@@ -101,14 +109,14 @@ bool Board::testMove(const string &start, const string &end){
 	Piece *p = getPiece(start);
 	Piece *temp = getPiece(end);
 	if(p->canMove(start, end, getBoard())){
-		Board[getPos(end)] = p;
-		Board[getPos(start)] = new Empty(getPos(start));
+		board[getPos(end)] = p;
+		board[getPos(start)] = new Empty(getPos(start));
 		if(isCheck(isTurnWhite)){
 			return false;
 		}
-		delete Board[getPos(start)];
-		Board[getPos(start)] = p;
-		Board[getPos(end)] = temp;
+		delete board[getPos(start)];
+		board[getPos(start)] = p;
+		board[getPos(end)] = temp;
 		return true;
 	}
 	else {
@@ -122,9 +130,9 @@ void Board::move(const string &start, const string &end){
 	// changes whose turn it is 
 	Piece *p = getPiece(start);
 	if(testMove(start,end)){
-		delete Board[getPos(end)];
-		Board[getPos(end)] = p;
-		Board[getPos(start)] = new Empty(getPos(start));
+		delete board[getPos(end)];
+		board[getPos(end)] = p;
+		board[getPos(start)] = new Empty(getPos(start));
 		isTurnWhite = (! isTurnWhite);
 		inCheck = isCheck(isTurnWhite);
 		if (isCheckmate()){
@@ -140,66 +148,62 @@ bool Board::isCheck(bool isWhite){
 	bool flag = false; // flag will change to true if an opposing piece can move
 	// to the space of the King 
 	for(int i=0; i<64; ++i){
-		if(Board[i]->canMove(getCor(i),King, getBoard())){
+		if(board[i]->canMove(getCor(i),king, getBoard())){
 			flag = true;
 		}
 	}
 	return flag;
 }
 
-bool Board::isCheckmate(){
+bool Board::isCheckmate() const{
 	return false;
 }
 
-bool Board::isStalemate(){
+bool Board::isStalemate() const{
 	return false;
 }
 
-string Board::sendToDisplay(){
-	return '';
+string Board::sendToDisplay() const{
+	ostringstream oss;
+	char tmp = '0';
+	int j = 0;
+	int end = 8;
+	for(int i = 8; i > 0; --i){
+		oss << (tmp + i) << " "; 
+		for(;j<end; ++j){
+			oss << (board[j]->Type());
+		}
+		end += 8;
+		oss << "\n";
+	}
+	oss << "\n  ";
+	for(int k=0; k <8; ++k){
+		oss << ('a' + k);
+	}
+	return oss.str();
 }
 
 
-string Board::findKing(bool isWhite){
+string Board::findKing(bool isWhite) const{
 	char king = 'k';
 	if(isWhite){
 		king = 'K';
 	}
 	for(int i=0; i<64;++i){
-		if(king == (Board[i])->Type()){
+		if(king == (board[i])->Type()){
 			return getCor(i); 
 		}
 	}
 	return "";
 }
 
-const Piece ** &Board::getBoard(){
-	return Board;
+Piece ** &Board::getBoard(){
+	return board;
 }
 
 
-Piece *Board::getPiece(const string &cmd){
+Piece *Board::getPiece(const string &cmd) const{
 	// retrieves the piece stored at cmd
 	int index = getPos(cmd);
-	return Board[index];
-}
-
-int getPos(const string &cmd){
-	int col = (cmd[0] - 'a');
-	int row = (cmd[1] - '1');
-	row = 7 - row;
-	int pos = 8*row+col; 
-	return pos;
-}
-
-string getCor(int index){
-	// inverse of getPos
-	string s;
-	ostringstream oss;
-	char row = '0' + (8 - (index / 8)); 
-	char col = 'a' + (index % 8);
-	oss << col;
-	oss << row;
-	s = oss.str();
-	return s;
+	return board[index];
 }

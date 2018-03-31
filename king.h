@@ -1,8 +1,20 @@
+#ifndef ___KING___
+#define ___KING___
+
+#include <string>
 #include "piece.h"
 
 class King: public Piece {
 	bool firstMove;
 public:
-	bool isEmpty() override;
+	King(int index, bool white);
+	~King();
+	bool canMove(const std::string &start, const std::string &end, const Piece ** &b) const override;
+	bool isEmpty() const override;
+	char Type() const override;
+	void moved() override;
+	bool first() const override;
 };
+
+#endif
 

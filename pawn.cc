@@ -1,14 +1,23 @@
+#include <string>
 #include "piece.h"
 #include "pawn.h"
 #include "board.h"
 
 Pawn::Pawn(int pos, bool isWhite): Piece{pos,isWhite}, firstMove{true} {}
 
-bool Pawn::isEmpty(){
+bool Pawn::isEmpty() const{
 	return false;
 }
 
-bool Pawn::canMove(const std::string &start,const std::string &end, const Piece ** &b){
+bool Pawn::first() const{
+	return firstMove;
+}
+
+void Pawn::moved(){
+	firstMove = false;
+}
+
+bool Pawn::canMove(const std::string &start,const std::string &end, const Piece ** &b) const{
 	int begin = getPos(start);
 	int fin = getPos(end);
 	if(posn() != begin){
@@ -98,7 +107,7 @@ bool Pawn::canMove(const std::string &start,const std::string &end, const Piece 
 	return false;
 }
 
-char Pawn::Type(){
+char Pawn::Type() const{
 	if(isWhite()){
 		return 'P';
 	} else {

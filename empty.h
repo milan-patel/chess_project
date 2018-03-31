@@ -1,6 +1,16 @@
+#ifndef ___EMPTY___
+#define ___EMPTY___
+
+#include <string>
 #include "piece.h"
 
 class Empty: public Piece {
 public:
-	bool isEmpty() override;
+	Empty(int index);
+	~Empty();
+	bool canMove(const std::string &start, const std::string &end, const Piece ** &b) const override;
+	bool isEmpty() const override;
+	char Type() const override;
 };
+
+#endif

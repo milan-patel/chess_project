@@ -1,3 +1,7 @@
+#ifndef ___TEXTDIS___
+#define ___TEXTDIS___
+
+#include <string>
 #include "board.h"
 
 class TextDisplay {
@@ -7,3 +11,5 @@ public:
 	void notify();
 }; 
 
+
+#endif
