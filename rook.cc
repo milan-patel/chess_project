@@ -4,7 +4,7 @@
 
 Rook::Rook(int pos, bool isWhite): Piece(pos, isWhite), firstMove{true}{}
 
-bool Rook::canMove(const std::string &start, const std::string &end, const Piece ** &b) const{
+bool Rook::canMove(const std::string &start, const std::string &end, Piece ** b) const{
 	int begin = getPos(start);
 	int fin = getPos(end);
 	if((begin % 8 == fin % 8) && begin > fin){ // the Rook is moving up

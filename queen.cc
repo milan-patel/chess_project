@@ -4,7 +4,7 @@
 
 Queen::Queen(int pos, bool isWhite): Piece(pos,isWhite){}
 
-bool Queen::canMove(const std::string &start, const std::string &end, const Piece ** &b) const{
+bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b) const{
 	int begin = getPos(start);
 	int fin = getPos(end);
 	if((begin % 8 == fin % 8) && begin > fin){ // the Queen is moving up

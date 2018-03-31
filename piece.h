@@ -10,7 +10,7 @@ class Piece {
 	bool white;
 public:
 	Piece(int pos, bool white);
-	virtual bool canMove(const std::string &start, const std::string &end, const Piece ** &b) const=0;  
+	virtual bool canMove(const std::string &start, const std::string &end, Piece ** b) const=0;  
 	bool isWhite() const;
 	virtual bool isEmpty() const=0;
 	int posn() const;

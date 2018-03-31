@@ -8,7 +8,7 @@ class Knight: public Piece {
 public:
 	Knight(int pos, bool isWhite);
 	bool isEmpty() const override;
-	bool canMove(const std::string &start, const std::string &end, const Piece ** &b) const override;
+	bool canMove(const std::string &start, const std::string &end, Piece ** b) const override;
 	char Type() const override;
 };
 

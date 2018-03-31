@@ -12,7 +12,7 @@ void King::moved(){
 	firstMove = false;
 }
 
-bool King::canMove(const string &start, const string &end, const Piece ** &b) const{
+bool King::canMove(const string &start, const string &end, Piece ** b) const{
 	int begin = getPos(start);
 	int fin = getPos(end);
 	if(!b[fin]->isEmpty() && (isWhite() == b[fin]->isWhite())){

@@ -8,7 +8,7 @@ bool Knight::isEmpty() const{
 	return false;
 }
 
-bool Knight::canMove(const std::string &start,const std::string &end, const Piece ** &b) const{
+bool Knight::canMove(const std::string &start,const std::string &end, Piece ** b) const{
 	int begin_x = getPos(start) % 8;
 	int begin_y = getPos(start) / 8;
 	int fin_x = getPos(end) % 8;

@@ -4,12 +4,13 @@
 #include <string>
 
 #include "player.h"
+class Board;
 
 class Comp: public Player {
 	int level;
 public:
 	Comp(int level,bool white);
-	std::string generateMove();
+	std::string generateMove(Board *b);
 };
 
 #endif

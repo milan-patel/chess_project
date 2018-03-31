@@ -8,7 +8,7 @@ bool Bishop::isEmpty() const{
 	return false;
 }
 
-bool Bishop::canMove(const std::string &start,const std::string &end, const Piece ** &b) const{
+bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b) const{
 	int begin = getPos(start);
 	int fin = getPos(end);
 	if(!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin < fin){

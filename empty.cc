@@ -17,7 +17,7 @@ Empty::Empty(int index): Piece{index, true}{}
 
 Empty::~Empty(){};
 
-bool Empty::canMove(const std::string &start, const std::string &end, const Piece ** &b) const{
+bool Empty::canMove(const std::string &start, const std::string &end, Piece ** b) const{
 	return false;
 }
 

@@ -17,7 +17,7 @@ void Pawn::moved(){
 	firstMove = false;
 }
 
-bool Pawn::canMove(const std::string &start,const std::string &end, const Piece ** &b) const{
+bool Pawn::canMove(const std::string &start,const std::string &end, Piece ** b) const{
 	int begin = getPos(start);
 	int fin = getPos(end);
 	if(posn() != begin){

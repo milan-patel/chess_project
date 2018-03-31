@@ -20,7 +20,7 @@ using namespace std;
 
 Board::Board(int player1, int player2): board{new Piece*[64]}, isTurnWhite{true},
 		inCheck{false}, s{new Scoreboard()}, p1{new Player(true)}, p2{new Player(false)}{
-			normalSetup();
+			clearBoard();
 			if(player1 > 0){
 				delete p1;
 				p1 = new Comp(player1, true);
@@ -29,6 +29,13 @@ Board::Board(int player1, int player2): board{new Piece*[64]}, isTurnWhite{true}
 				p1 = new Comp(player2, false);
 			}
 		}
+
+void Board::clearBoard(){
+	for(int i=0; i<64; ++i){
+		delete board[i];
+		board[i] = new Empty(i);
+	}
+}
 
 void Board::normalSetup(){
 	// setting up a new black team
@@ -98,6 +105,7 @@ Board::~Board(){
 		delete board[i];
 	}
 	delete [] board;
+	delete s;
 	delete p1;
 	delete p2;
 }
@@ -124,6 +132,17 @@ bool Board::testMove(const string &start, const string &end){
 	}
 }
 
+bool Board::canPawnPromote(bool isTurnWhite){
+	int start = isTurnWhite ? 0 : 56;
+	int end = isTurnWhite ? 56 : 64;
+	while (start < end) {
+		char isPawn = isTurnWhite ? 'P' : 'p';
+		if (isPawn == board[i]->Type()) {
+			return true;
+		}
+	}
+	return false;
+}
 
 void Board::move(const string &start, const string &end){
 	// makes the move, if valid, and checks if the opposing player is now in check
@@ -132,7 +151,11 @@ void Board::move(const string &start, const string &end){
 	if(testMove(start,end)){
 		delete board[getPos(end)];
 		board[getPos(end)] = p;
+		p->changePos(getPos(end));
 		board[getPos(start)] = new Empty(getPos(start));
+		if(canPawnPromote()){
+
+		}
 		isTurnWhite = (! isTurnWhite);
 		inCheck = isCheck(isTurnWhite);
 		if (isCheckmate()){
@@ -165,11 +188,12 @@ bool Board::isStalemate() const{
 
 string Board::sendToDisplay() const{
 	ostringstream oss;
-	char tmp = '0';
+	char zero = '0';
 	int j = 0;
 	int end = 8;
 	for(int i = 8; i > 0; --i){
-		oss << (tmp + i) << " "; 
+		char temp = zero + i;
+		oss << temp << " "; 
 		for(;j<end; ++j){
 			oss << (board[j]->Type());
 		}
@@ -178,9 +202,19 @@ string Board::sendToDisplay() const{
 	}
 	oss << "\n  ";
 	for(int k=0; k <8; ++k){
-		oss << ('a' + k);
+		char temp = 'a' + k;
+		oss << temp;
 	}
+	oss << '\n';
 	return oss.str();
+}
+
+void Board::setTurn(string colour){
+	if("black" == colour && "BLACK" == colour){
+		isTurnWhite = false;
+	} else if ("white" == colour && "white" == colour){
+		isTurnWhite = true;
+	}
 }
 
 
@@ -197,8 +231,9 @@ string Board::findKing(bool isWhite) const{
 	return "";
 }
 
-Piece ** &Board::getBoard(){
-	return board;
+Piece ** Board::getBoard(){
+	Piece ** tmp = board; 
+	return tmp;
 }
 
 
