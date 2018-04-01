@@ -59,6 +59,7 @@ int main () {
 
 		// game is now running
 		else if (cmd == "game") {//  && config == "complete") {
+			cout << "success" << endl;
 
 			if (config.empty()) {
 				b.normalSetup();
@@ -70,7 +71,7 @@ int main () {
 					cin >> start >> end;
 					// insert move method
 					b.move(start,end);
-					if (b.canPawnPromote(!b.getTurnStatus())) {
+					if (b.canPawnPromote()) {
 						char prom;
 						cin >> prom;
 						if (!b.getTurnStatus() && 

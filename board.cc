@@ -38,6 +38,9 @@ void Board::clearBoard(){
 }
 
 void Board::normalSetup(){
+	for(int i=0; i<64; ++i){
+		delete board[i];
+	}
 	// setting up a new black team
 	board[0] = new Rook(0,false); // back row
 	board[1] = new Knight(1,false);
@@ -132,15 +135,16 @@ bool Board::testMove(const string &start, const string &end){
 	}
 }
 
-bool Board::canPawnPromote(bool isTurnWhite){
-	int start = isTurnWhite ? 0 : 56;
-	int end = isTurnWhite ? 56 : 64;
-	while (start < end) {
-		char isPawn = isTurnWhite ? 'P' : 'p';
-		if (isPawn == board[start]->Type()) {
+bool Board::canPawnPromote(){
+	for(int i = 0; i<8; ++i){
+		if('P' == board[i]->Type()){
 			return true;
 		}
-		start++;
+	}
+	for(int j =56; j<64; ++j){
+		if('p' == board[j]->Type()){
+			return true;
+		}
 	}
 	return false;
 }
