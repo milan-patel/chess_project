@@ -35,6 +35,9 @@ public:
 	// cmd
 	Piece ** getBoard(); // provides a copy of the board
 	// for other classes to reference
+	bool canPawnPromote(bool isTurnWhite);
+	bool getTurnStatus() const;
+
 private:
 	std::string findKing(bool isWhite) const;
 	bool testMove(const std::string &start, const std::string &end);

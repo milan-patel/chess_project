@@ -58,26 +58,30 @@ int main () {
 		}
 
 		// game is now running
-		else if (cmd == "game" && config == "complete") {
+		else if (cmd == "game") {//  && config == "complete") {
 
+			if (config.empty()) {
+				b.normalSetup();
+			}
 			// player moves
-			while (true) {
-				cin >> cmd;
+			while (cin >> cmd) {
 				// move command
 				if (cmd == "move") {
 					cin >> start >> end;
 					// insert move method
 					b.move(start,end);
-					if(b->canPawnPromote(!b->isTurnWhite())){
+					if (b.canPawnPromote(!b.getTurnStatus())) {
 						char prom;
 						cin >> prom;
-						if(!b->isTurnWhite() && ('R' == prom || prom == 'N' || 
-							'Q' == prom || 'B' == prom)){
-							b->place(prom, end);
-						} else if ('r' == prom || prom == 'n' || 
-							'q' == prom || 'b' == prom){
-							b->place(prom, end);
-						} else{
+						if (!b.getTurnStatus() && 
+							('R' == prom || prom == 'N' || 'Q' == prom || 'B' == prom)) {
+							b.place(prom, end);
+						}
+						else if ('r' == prom || prom == 'n' || 
+							'q' == prom || 'b' == prom) {
+							b.place(prom, end);
+						}
+						else {
 							cout << "Invalid promotion" << endl;
 						}
 					}
@@ -88,7 +92,6 @@ int main () {
 					break;
 				}
 			}
-
 		}
 	}
 }

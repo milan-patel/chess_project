@@ -137,11 +137,16 @@ bool Board::canPawnPromote(bool isTurnWhite){
 	int end = isTurnWhite ? 56 : 64;
 	while (start < end) {
 		char isPawn = isTurnWhite ? 'P' : 'p';
-		if (isPawn == board[i]->Type()) {
+		if (isPawn == board[start]->Type()) {
 			return true;
 		}
+		start++;
 	}
 	return false;
+}
+
+bool Board::getTurnStatus() const {
+	return isTurnWhite;
 }
 
 void Board::move(const string &start, const string &end){
@@ -153,9 +158,11 @@ void Board::move(const string &start, const string &end){
 		board[getPos(end)] = p;
 		p->changePos(getPos(end));
 		board[getPos(start)] = new Empty(getPos(start));
+		/*
 		if(canPawnPromote()){
 
 		}
+		*/
 		isTurnWhite = (! isTurnWhite);
 		inCheck = isCheck(isTurnWhite);
 		if (isCheckmate()){
