@@ -5,7 +5,7 @@
 using namespace std;
 
 int main () {
-	Board b = Board(0,0)
+	Board b = Board(0,0);
 	string cmd;
 	string start;
 	string end;
@@ -81,6 +81,7 @@ int main () {
 							cout << "Invalid promotion" << endl;
 						}
 					}
+					cout << b.sendToDisplay();
 				}
 				else if (cmd == "resign") {
 					// insert resign method
