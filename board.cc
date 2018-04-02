@@ -14,7 +14,6 @@
 #include "king.h"
 #include <string>
 
-
 using namespace std;
 
 
@@ -68,6 +67,21 @@ void Board::normalSetup(){
 	board[61] = new Bishop(61,true);
 	board[62] = new Knight(62,true);
 	board[63] = new Rook(63,true);
+}
+
+void Board::newPlayers(int player1, int player2){
+	delete p1;
+	delete p2;
+	if(player1 == 0){
+		p1 = new Player(true);
+	} else if(player1 > 0){
+		p1 = new Comp(player1, true);
+	}
+	if(player2 == 0){
+		p2 = new Player(false);
+	} else if(player2 > 0){
+		p2 = new Comp(player, true);
+	}
 }
 
 void Board::place(char piece, const string &cmd){ 
@@ -161,18 +175,22 @@ void Board::move(const string &start, const string &end){
 		delete board[getPos(end)];
 		board[getPos(end)] = p;
 		p->changePos(getPos(end));
+		p->moved();
 		board[getPos(start)] = new Empty(getPos(start));
-		/*
-		if(canPawnPromote()){
-
-		}
-		*/
 		isTurnWhite = (! isTurnWhite);
 		inCheck = isCheck(isTurnWhite);
-		if (isCheckmate()){
-			// do something in case Checkmate is reached
+		if (inCheck && isCheckmate()){
+			string winner;
+			if(isTurnWhite){
+				winner = "black";
+			} else { 
+				winner = "white";
+			}
+			endGame(winner);
+			return; 
 		} else if(isStalemate()){
-			// do something in case Stalemate is reached
+			endGame("draw");
+			return;
 		}
 	}
 }
@@ -189,12 +207,125 @@ bool Board::isCheck(bool isWhite){
 	return flag;
 }
 
+void endGame(string cmd){
+	if(cmd == "black"){
+		s->win(false);
+	} else if (cmd == "white"){
+		s->win(true);
+	} else if (cmd == "white resigns"){
+		s->resign(true);
+	} else if (cmd == "black resigns"){
+		s->resign(false);
+	} else if (cmd == "draw"){
+		s->tie();
+	} else {
+		return;
+	}
+	normalSetup();
+}
+
+bool Board::validBoard() const{
+	int numBlackKings = 0;
+	int numWhiteKings = 0;
+	for(int i=0; i<8;++i){
+		if(board[i]->Type() =='P' || board[i]->Type() =='p'){
+			return false;
+		} else if(board[i]->Type() == 'K'){
+			++numWhiteKings;
+		} else if(board[i]->Type() == 'k'){
+			++numBlackKings;
+		}
+	}
+	for(int j=8; j<56;++j){
+		if(board[j]->Type() == 'K'){
+			++numWhiteKings;
+		} else if(board[j]->Type() == 'k'){
+			++numBlackKings;
+		}
+	}
+	for(int k=56; i<64;++k){
+		if(board[i]->Type() =='P' || board[i]->Type() =='p'){
+			return false;
+		} else if(board[i]->Type() == 'K'){
+			++numWhiteKings;
+		} else if(board[i]->Type() == 'k'){
+			++numBlackKings;
+		}
+	}
+	if ( numBlackKings != 1 || numWhiteKings != 1){
+		return false;
+	} else {
+		return true;
+	}
+}
+
 bool Board::isCheckmate() const{
-	return false;
+	int king = getPos(findKing(isTurnWhite));
+	if(isTurnWhite){
+		for(int i=0;i<64; ++i){
+			char type = board[i]->Type();
+			if(isTurnWhite == board[i]->isWhite() && 'P' == type &&
+				(testMove(getCor(i), getCor(i-1)) || testMove(getCor(i), getCor(i+1)) || 
+					testMove(getCor(i), getCor(i-9)) || testMove(getCor(i), getCor(i-8)) || 
+					testMove(getCor(i), getCor(i-7)))){
+				return false;
+			} else if(isTurnWhite == board[i]->isWhite()){
+				for(int j=0; j<64;++j){
+					if(j==i){
+						continue;
+					} else if(testMove(getCor(i), getCor(j))){
+						return false;
+					}
+				}
+			} else{
+				continue;
+			}
+		}
+	} else{
+		for(int i=0;i<64; ++i){
+			char type = board[i]->Type();
+			if(isTurnWhite == board[i]->isWhite() && 'p' == type &&
+				(testMove(getCor(i), getCor(i-1)) || testMove(getCor(i), getCor(i+1)) || 
+					testMove(getCor(i), getCor(i-9)) || testMove(getCor(i), getCor(i-8)) || 
+					testMove(getCor(i), getCor(i-7)))){
+				return false;
+			} else if(isTurnWhite == board[i]->isWhite()){
+				for(int j=0; j<64;++j){
+					if(j==i){
+						continue;
+					} else if(testMove(getCor(i), getCor(j))){
+						return false;
+					}
+				}
+			} else {
+				continue;
+			}
+		}
+	}
+	return true;
 }
 
 bool Board::isStalemate() const{
-	return false;
+	for(int i=0;i<64; ++i){
+			char type = board[i]->Type();
+			if(isTurnWhite == board[i]->isWhite() && 'P' == type &&
+				(testMove(getCor(i), getCor(i-1)) || testMove(getCor(i), getCor(i+1)) || 
+					testMove(getCor(i), getCor(i-9)) || testMove(getCor(i), getCor(i-8)) || 
+					testMove(getCor(i), getCor(i-7)))){
+				return false;
+			} else if(isTurnWhite == board[i]->isWhite()){
+				for(int j=0; j<64;++j){
+					if(j==i){
+						continue;
+					} else if(testMove(getCor(i), getCor(j))){
+						return false;
+					}
+				}
+			} else {
+				continue;
+			}
+		}
+	return true;
 }
 
 string Board::sendToDisplay() const{
@@ -240,6 +371,10 @@ string Board::findKing(bool isWhite) const{
 		}
 	}
 	return "";
+}
+
+void Board::printScore() const{
+	s->printScore();
 }
 
 Piece ** Board::getBoard(){

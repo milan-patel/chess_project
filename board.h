@@ -20,13 +20,16 @@ class Board {
 public:
 	Board(int p1, int p2);
 	~Board();
+	void endGame(std::string cmd); // cmd is "black", "white", "white resigns",
+	// "black resigns" or "draw";
 	void clearBoard(); // clears all the current pieces from the board 
 	void normalSetup(); // default configuration for a game
 	void place(char piece, const std::string &cmd); // only used during setup mode 
 	bool validBoard() const; // only used during setup mode, checks if board is in a valid
 	// setup
+	void newPlayers(int player1, int player2); // generate two new players
 	void setTurn(std::string colour); //sets turn to colour
-	void move(const std::string &start, const std::string &end);
+	bool move(const std::string &start, const std::string &end);
 	bool isCheck(bool isWhite); //
 	bool isCheckmate() const; 
 	bool isStalemate() const; 
@@ -37,6 +40,7 @@ public:
 	// for other classes to reference
 	bool canPawnPromote();
 	bool getTurnStatus() const;
+	void printScore() const;
 
 private:
 	std::string findKing(bool isWhite) const;

@@ -4,11 +4,15 @@
 #include <string>
 
 class Scoreboard{
-	int whiteScore;
-	int blackScore;
+	float whiteScore;
+	float blackScore;
 public:
 	Scoreboard();
-	std::string printScore();
+	void check(std::string whoseInCheck); // sends 
+	void tie(); 
+	void win(bool isWhite);
+	void resign(bool isWhite)
+	void printScore();
 };
 
 #endif
