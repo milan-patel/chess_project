@@ -17,17 +17,15 @@ Empty::Empty(int index): Piece{index, true}{}
 
 Empty::~Empty(){};
 
-bool Empty::canMove(const std::string &start, const std::string &end, Piece ** b) const{
+bool Empty::canMove(const std::string &start, const std::string &end, Piece ** b) const {
 	return false;
 }
 
-bool Empty::isEmpty() const{ return true; }
+bool Empty::isEmpty() const {
+	return true;
+}
 
-char Empty::Type() const{
-	if (isWhiteSquare(posn())){
-		return ' ';
-	} else {
-		return '_';
-	}
+char Empty::Type() const {
+	return isWhiteSquare(posn()) ? ' ' : '_' ;
 }
 

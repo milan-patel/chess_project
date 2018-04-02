@@ -58,9 +58,37 @@ int main () {
 		}
 
 		// game is now running
-		else if (cmd == "game") {//  && config == "complete") {
-			cout << "success" << endl;
+		else if (cmd == "game") {
+			string p1;
+			string p2;
+			int ip1;
+			int ip2;
 
+			cin >> p1 >> p2;
+
+			// setup Board with humans or computers
+			if (p1 == "human") {
+				ip1 = 0;
+			}
+
+			else if (p1 != "human") {
+				char temp = p1[p1.length()-2];
+				ip1 = temp - '0';
+			}
+
+			if (p2 == "human") {
+				ip2 = 0;
+			}
+
+			else if (p2 != "human") {
+				char temp = p2[p2.length() - 2];
+				ip2 = temp - '0';
+			}
+
+			if (ip1 != 0 && ip2 != 0) {
+				b.newPlayers(ip1,ip2);	
+			}
+			
 			if (config.empty()) {
 				b.normalSetup();
 			}
@@ -90,9 +118,11 @@ int main () {
 				}
 				else if (cmd == "resign") {
 					// insert resign method
+					b.rsesignGame(!b.getTurnStatus());
 					break;
 				}
 			}
 		}
 	}
+	b.printScore();
 }
