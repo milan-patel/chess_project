@@ -6,7 +6,8 @@ using namespace std;
 
 bool isGameRunning = false;
 
-void setup(){
+void setup(Board *b){
+	b->clearBoard();
 	string action;
 	char piece;
 	string colour;
@@ -18,15 +19,15 @@ void setup(){
 			cin >> piece >> coord;
 			if (coord[0] >= 'a' && coord[0] <= 'z' && 
 				coord[1] >= '1' && coord[1] <= '8') {
-				b.place(piece, coord);
-				cout << b.sendToDisplay();
+				b->place(piece, coord);
+				cout << b->sendToDisplay();
 			}
 		}
 
 		// setting whose turn is next
 		else if (action[0] == '=') {
 			cin >> colour;
-			b.setTurn(colour);
+			b->setTurn(colour);
 		}
 
 		// removing a piece
@@ -35,7 +36,7 @@ void setup(){
 			if (coord[0] >= 'a' && coord[0] <= 'z' &&
 				coord[1] >= '1' && coord[0] <= '8') {
 				// insert remove method
-				b.place('e',coord);
+				b->place('e',coord);
 		}
 	}
 
@@ -52,9 +53,8 @@ void setup(){
 	}
 }
 
-void game(){
+void game(Board *b){
 	string action;
-
 	string start;
 	string end;
 
@@ -63,37 +63,38 @@ void game(){
 		if (action == "move") {
 			cin >> start >> end;
 			// insert move method
-			b.move(start,end);
-			if (b.canPawnPromote()) { // requires input from the user in the case of pawn promotion
+			b->move(start,end);
+			if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
 				char prom;
 				cin >> prom;
-				if (!b.getTurnStatus() && 
+				if (!b->getTurnStatus() && 
 					('R' == prom || prom == 'N' || 'Q' == prom || 'B' == prom)) {
-					b.place(prom, end);
+					b->place(prom, end);
 				}
 				else if ('r' == prom || prom == 'n' || 
 					'q' == prom || 'b' == prom) {
-					b.place(prom, end);
+					b->place(prom, end);
 				}
 				else {
 					cout << "Invalid promotion" << endl;
 				}
 			}
-			if(b.gameOver()){
+			if(b->isGameOver()){
 				break;
 			}
-			cout << b.sendToDisplay();
+			cout << b->sendToDisplay();
 		}
 		else if (action == "resign") {
 			// insert resign method
-			b.resignGame(!b.getTurnStatus());
+			b->resignGame(!b.getTurnStatus());
 			break;
 		}
 	}
 }
 
-void players(){
+void players(Board *b){
 	isGameRunning = true;
+	b->gameOn();
 	string p1;
 	string p2;
 	int ip1;
@@ -121,12 +122,12 @@ void players(){
 	}
 
 	if (ip1 != 0 && ip2 != 0) {
-		b.newPlayers(ip1,ip2);	
+		b->newPlayers(ip1,ip2);	
 	}
 }
 
 int main () {
-	Board b = Board(0,0);
+	Board *b = new Board(0,0);
 	string cmd;
 
 	while (!cin.eof()) {
@@ -134,14 +135,15 @@ int main () {
 
 		// setup command
 		if (cmd == "setup") {
-			setup();
+			setup(b);
 		}
 
 		// game is now running
 		else if (cmd == "game") {
-			players();
-			game();
+			players(b);
+			game(b);
 		}
 	}
-	b.printScore();
+	b->printScore();
+	delete b;
 }

@@ -18,7 +18,7 @@ using namespace std;
 
 
 Board::Board(int player1, int player2): board{new Piece*[64]}, isTurnWhite{true},
-		inCheck{false}, s{new Scoreboard()}, p1{new Player(true)}, p2{new Player(false)}{
+		inCheck{false}, gameOver{true}, s{new Scoreboard()}, p1{new Player(true)}, p2{new Player(false)}{
 			clearBoard();
 			if(player1 > 0){
 				delete p1;
@@ -208,6 +208,7 @@ bool Board::isCheck(bool isWhite){
 }
 
 void endGame(string cmd){
+	gameOver = true;
 	if(cmd == "black"){
 		s->win(false);
 	} else if (cmd == "white"){
@@ -222,6 +223,14 @@ void endGame(string cmd){
 		return;
 	}
 	normalSetup();
+}
+
+bool Board::isGameOver(){
+	return gameOver;
+}
+
+void Board::gameOn(){
+	gameOver = false;
 }
 
 bool Board::validBoard() const{

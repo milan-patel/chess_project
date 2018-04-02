@@ -13,6 +13,7 @@ class Board {
 	Piece **board; // an array of 64 Piece pointers
 	bool isTurnWhite;
 	bool inCheck;
+	bool gameOver;
 	Scoreboard *s;
 	Player *p1;
 	Player *p2;
@@ -41,6 +42,8 @@ public:
 	bool canPawnPromote();
 	bool getTurnStatus() const;
 	void printScore() const;
+	bool isGameOver(); 
+	void gameOn(); // sets gameOver flag to false
 
 private:
 	std::string findKing(bool isWhite) const;
