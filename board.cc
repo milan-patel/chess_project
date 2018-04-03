@@ -80,7 +80,7 @@ void Board::newPlayers(int player1, int player2){
 	if(player2 == 0){
 		p2 = new Player(false);
 	} else if(player2 > 0){
-		p2 = new Comp(player, true);
+		p2 = new Comp(player2, true);
 	}
 }
 
@@ -133,10 +133,16 @@ bool Board::testMove(const string &start, const string &end){
 	// false. In either case, the board is mutated back to its original state
 	Piece *p = getPiece(start);
 	Piece *temp = getPiece(end);
+	if(p->isWhite() != getTurnStatus()){
+		return false;
+	}
 	if(p->canMove(start, end, getBoard())){
 		board[getPos(end)] = p;
 		board[getPos(start)] = new Empty(getPos(start));
 		if(isCheck(isTurnWhite)){
+			delete board[getPos(start)];
+			board[getPos(start)] = p;
+			board[getPos(end)] = temp;
 			return false;
 		}
 		delete board[getPos(start)];
@@ -179,6 +185,13 @@ void Board::move(const string &start, const string &end){
 		board[getPos(start)] = new Empty(getPos(start));
 		isTurnWhite = (! isTurnWhite);
 		inCheck = isCheck(isTurnWhite);
+		if(isCheck(true)){
+			cout << "white's in check" << endl;
+		} else if(isCheck(false)){
+			cout << "black's in check" << endl;
+		} else {
+
+		}
 		if (inCheck && isCheckmate()){
 			string winner;
 			if(isTurnWhite){
@@ -207,7 +220,7 @@ bool Board::isCheck(bool isWhite){
 	return flag;
 }
 
-void endGame(string cmd){
+void Board::endGame(string cmd){
 	gameOver = true;
 	if(cmd == "black"){
 		s->win(false);
@@ -252,12 +265,12 @@ bool Board::validBoard() const{
 			++numBlackKings;
 		}
 	}
-	for(int k=56; i<64;++k){
-		if(board[i]->Type() =='P' || board[i]->Type() =='p'){
+	for(int k=56; k<64;++k){
+		if(board[k]->Type() =='P' || board[k]->Type() =='p'){
 			return false;
-		} else if(board[i]->Type() == 'K'){
+		} else if(board[k]->Type() == 'K'){
 			++numWhiteKings;
-		} else if(board[i]->Type() == 'k'){
+		} else if(board[k]->Type() == 'k'){
 			++numBlackKings;
 		}
 	}
@@ -268,7 +281,7 @@ bool Board::validBoard() const{
 	}
 }
 
-bool Board::isCheckmate() const{
+bool Board::isCheckmate() {
 	int king = getPos(findKing(isTurnWhite));
 	if(isTurnWhite){
 		for(int i=0;i<64; ++i){
@@ -314,7 +327,7 @@ bool Board::isCheckmate() const{
 	return true;
 }
 
-bool Board::isStalemate() const{
+bool Board::isStalemate(){
 	for(int i=0;i<64; ++i){
 			char type = board[i]->Type();
 			if(isTurnWhite == board[i]->isWhite() && 'P' == type &&

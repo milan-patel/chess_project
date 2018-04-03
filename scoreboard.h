@@ -8,10 +8,10 @@ class Scoreboard{
 	float blackScore;
 public:
 	Scoreboard();
-	void check(std::string whoseInCheck); // sends 
+	void check(bool IsWhiteInCheck); // sends 
 	void tie(); 
 	void win(bool isWhite);
-	void resign(bool isWhite)
+	void resign(bool isWhite);
 	void printScore();
 };
 

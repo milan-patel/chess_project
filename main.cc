@@ -4,15 +4,16 @@
 #include "board.h"
 using namespace std;
 
-bool isGameRunning = false;
+bool requiresDefaultSetup = true;
 
 void setup(Board *b){
 	b->clearBoard();
+	requiresDefaultSetup = false;
 	string action;
 	char piece;
 	string colour;
 	string coord;
-	while (cin >> config) {
+	while (cin >> action) {
 
 		// placing a piece
 		if (action[0] == '+') {
@@ -43,7 +44,7 @@ void setup(Board *b){
 		// complete setup mode
 		else if (action == "done" && b->validBoard()) {
 			// check for valid board before exiting
-			isGameRunning = true;			
+			b->gameOn();	
 			break;
 		}
 		else if (action == "done" && !b->validBoard()) {
@@ -57,7 +58,10 @@ void game(Board *b){
 	string action;
 	string start;
 	string end;
-
+	if(requiresDefaultSetup){
+		b->normalSetup();
+	}
+	cout << b->sendToDisplay();
 	while (cin >> action) {
 		// move command
 		if (action == "move") {
@@ -86,14 +90,17 @@ void game(Board *b){
 		}
 		else if (action == "resign") {
 			// insert resign method
-			b->resignGame(!b.getTurnStatus());
+			if(b->getTurnStatus()){
+				b->endGame("white resigns");
+			} else {
+				b->endGame("black resigns");
+			}
 			break;
 		}
 	}
 }
 
 void players(Board *b){
-	isGameRunning = true;
 	b->gameOn();
 	string p1;
 	string p2;

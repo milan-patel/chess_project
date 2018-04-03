@@ -30,10 +30,10 @@ public:
 	// setup
 	void newPlayers(int player1, int player2); // generate two new players
 	void setTurn(std::string colour); //sets turn to colour
-	bool move(const std::string &start, const std::string &end);
+	void move(const std::string &start, const std::string &end);
 	bool isCheck(bool isWhite); //
-	bool isCheckmate() const; 
-	bool isStalemate() const; 
+	bool isCheckmate(); 
+	bool isStalemate(); 
 	std::string sendToDisplay() const; 
 	Piece *getPiece(const std::string &cmd) const; // returns a pointer to the piece stored at
 	// cmd
