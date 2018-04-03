@@ -37,6 +37,8 @@ void Board::clearBoard(){
 }
 
 void Board::normalSetup(){
+	setTurn("white");
+	gameOn();
 	for(int i=0; i<64; ++i){
 		delete board[i];
 	}
@@ -186,9 +188,9 @@ void Board::move(const string &start, const string &end){
 		isTurnWhite = (! isTurnWhite);
 		inCheck = isCheck(isTurnWhite);
 		if(isCheck(true)){
-			cout << "white's in check" << endl;
+			s->check(true);
 		} else if(isCheck(false)){
-			cout << "black's in check" << endl;
+			s->check(false);
 		} else {
 
 		}

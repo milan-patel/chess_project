@@ -15,10 +15,13 @@ bool Rook::canMove(const std::string &start, const std::string &end, Piece ** b)
 			}
 			begin -=8;
 		}
-		if (b[begin]->isWhite() == isWhite()) {
+		if (b[begin]->isEmpty()) {
+			return true;
+		} else if(b[begin]->isWhite() == isWhite()){
 			return false;
+		} else {
+			return true;
 		}
-		return true;
 	}
 	else if ((begin % 8 == fin % 8) && begin < fin) {// the Rook is moving down
 		begin += 8;
@@ -28,10 +31,13 @@ bool Rook::canMove(const std::string &start, const std::string &end, Piece ** b)
 			}
 			begin +=8;
 		}
-		if (b[begin]->isWhite() == isWhite()) {
+		if (b[begin]->isEmpty()) {
+			return true;
+		} else if(b[begin]->isWhite() == isWhite()){
 			return false;
+		} else {
+			return true;
 		}
-		return true;
 	}
 	else if ((begin / 8) == (fin / 8) && (begin > fin)) {// the Rook is moving right
 		begin--;
@@ -41,10 +47,13 @@ bool Rook::canMove(const std::string &start, const std::string &end, Piece ** b)
 			}
 			begin--;
 		}
-		if (b[begin]->isWhite() == isWhite()) {
+		if (b[begin]->isEmpty()) {
+			return true;
+		} else if(b[begin]->isWhite() == isWhite()){
 			return false;
-		}
-		return true;	
+		} else {
+			return true;
+		}	
 	}
 	else if ((begin / 8) == (fin / 8) && (begin < fin)) {// the Rook is moving left
 		begin++;
@@ -54,10 +63,13 @@ bool Rook::canMove(const std::string &start, const std::string &end, Piece ** b)
 			}
 			begin++;
 		}
-		if (b[begin]->isWhite() == isWhite()) {
+		if (b[begin]->isEmpty()) {
+			return true;
+		} else if(b[begin]->isWhite() == isWhite()){
 			return false;
-		}
-		return true;	
+		} else {
+			return true;
+		}	
 	}
 	else {
 		return false;
