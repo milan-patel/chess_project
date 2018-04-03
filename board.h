@@ -4,6 +4,7 @@
 #include <string>
 #include "scoreboard.h"
 #include "player.h"
+#include "graphicsdisplay.h"
 
 class Piece;
 
@@ -15,6 +16,7 @@ class Board {
 	bool inCheck;
 	bool gameOver;
 	Scoreboard *s;
+	GraphicsDisplay *gd = nullptr;
 	Player *p1;
 	Player *p2;
 
@@ -44,6 +46,9 @@ public:
 	void printScore() const;
 	bool isGameOver(); 
 	void gameOn(); // sets gameOver flag to false
+	void setgd(GraphicsDisplay *g);
+
+private:
 	std::string findKing(bool isWhite) const;
 	bool testMove(const std::string &start, const std::string &end);
 };

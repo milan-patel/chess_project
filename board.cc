@@ -12,6 +12,7 @@
 #include "rook.h"
 #include "queen.h"
 #include "king.h"
+#include "graphicsdisplay.h"
 #include <string>
 
 using namespace std;
@@ -71,6 +72,7 @@ void Board::normalSetup(){
 	board[61] = new Bishop(61,true);
 	board[62] = new Knight(62,true);
 	board[63] = new Rook(63,true);
+	gd->defaultDisplay();
 }
 
 void Board::newPlayers(int player1, int player2){
@@ -117,6 +119,7 @@ void Board::place(char piece, const string &cmd){
 		delete board[index];
 		board[index] = new Empty(index);
 	}
+	gd->setPiece(piece,cmd);
 }
 
 
@@ -129,6 +132,7 @@ Board::~Board(){
 	delete s;
 	delete p1;
 	delete p2;
+	delete gd;
 }
 
 bool Board::testMove(const string &start, const string &end){
@@ -188,6 +192,7 @@ void Board::move(const string &start, const string &end){
 		p->moved();
 		board[getPos(start)] = new Empty(getPos(start));
 		isTurnWhite = (! isTurnWhite);
+		gd->updateMove(board[getPos(end)]->Type(),start,end);
 		inCheck = isCheck(isTurnWhite);
 		if(isCheck(true)){
 			s->check(true);
@@ -439,4 +444,8 @@ Piece *Board::getPiece(const string &cmd) const{
 	// retrieves the piece stored at cmd
 	int index = getPos(cmd);
 	return board[index];
+}
+
+void Board::setgd(GraphicsDisplay *g) {
+	this->gd = g;
 }

@@ -9,6 +9,7 @@ bool requiresDefaultSetup = true;
 void setup(Board *b){
 	b->clearBoard();
 	requiresDefaultSetup = false;
+	GraphicsDisplay *g = new GraphicsDisplay();
 	string action;
 	char piece;
 	string colour;
@@ -59,6 +60,8 @@ void game(Board *b){
 	string start;
 	string end;
 	if(requiresDefaultSetup){
+		GraphicsDisplay *gd = new GraphicsDisplay();
+		b->setgd(gd);
 		b->normalSetup();
 	}
 	cout << b->sendToDisplay();
