@@ -46,12 +46,9 @@ public:
 	void printScore() const;
 	bool isGameOver(); 
 	void gameOn(); // sets gameOver flag to false
-<<<<<<< HEAD
 	void setgd(GraphicsDisplay *g);
 
 private:
-=======
->>>>>>> origin/master
 	std::string findKing(bool isWhite) const;
 	bool testMove(const std::string &start, const std::string &end);
 };
