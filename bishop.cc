@@ -13,7 +13,8 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 	int fin = getPos(end);
 	if (!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin < fin) {
 		while (true) {
-			if (begin == fin && !(isWhite() == b[begin]->isWhite())) {
+			begin += 7;
+			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
 				return true;
 			}
 			else if (begin == fin && b[begin]->isEmpty()) {
@@ -29,7 +30,8 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 	}
 	else if (!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin > fin) {
 		while (true) {
-			if (begin == fin && !(isWhite() == b[begin]->isWhite())) {
+			begin -= 7;
+			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
 				return true;
 			}
 			else if (begin == fin && b[begin]->isEmpty()) {
@@ -45,7 +47,8 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 	}
 	else if (begin % 9 == fin % 9 && begin < fin) {
 		while (true) {
-			if (begin == fin && !(isWhite() == b[begin]->isWhite())) {
+			begin += 9;
+			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
 				return true;
 			}
 			else if (begin == fin && b[begin]->isEmpty()) {
@@ -61,7 +64,8 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 	}
 	else if (begin % 9 == fin % 9 && begin > fin) {
 		while (true) {
-			if (begin == fin && !(isWhite() == b[begin]->isWhite())) {
+			begin -= 9;
+			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
 				return true;
 			}
 			else if (begin == fin && b[begin]->isEmpty()) {
