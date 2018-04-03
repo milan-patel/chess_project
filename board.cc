@@ -19,7 +19,9 @@ using namespace std;
 
 Board::Board(int player1, int player2): board{new Piece*[64]}, isTurnWhite{true},
 		inCheck{false}, gameOver{true}, s{new Scoreboard()}, p1{new Player(true)}, p2{new Player(false)}{
-			clearBoard();
+			for(int i=0; i<64; ++i){
+				board[i] = new Empty(i);
+			}
 			if(player1 > 0){
 				delete p1;
 				p1 = new Comp(player1, true);
@@ -248,7 +250,7 @@ void Board::gameOn(){
 	gameOver = false;
 }
 
-bool Board::validBoard() const{
+bool Board::validBoard(){
 	int numBlackKings = 0;
 	int numWhiteKings = 0;
 	for(int i=0; i<8;++i){
@@ -277,6 +279,10 @@ bool Board::validBoard() const{
 		}
 	}
 	if ( numBlackKings != 1 || numWhiteKings != 1){
+		return false;
+	} else if (isCheckmate()){
+		return false;
+	} else if (isStalemate()){
 		return false;
 	} else {
 		return true;
@@ -330,7 +336,8 @@ bool Board::isCheckmate() {
 }
 
 bool Board::isStalemate(){
-	for(int i=0;i<64; ++i){
+	if(isTurnWhite){
+		for(int i=0;i<64; ++i){
 			char type = board[i]->Type();
 			if(isTurnWhite == board[i]->isWhite() && 'P' == type &&
 				(testMove(getCor(i), getCor(i-1)) || testMove(getCor(i), getCor(i+1)) || 
@@ -348,7 +355,28 @@ bool Board::isStalemate(){
 			} else {
 				continue;
 			}
+		} 
+	} else {
+		for(int i=0;i<64; ++i){
+			char type = board[i]->Type();
+			if(isTurnWhite == board[i]->isWhite() && 'p' == type &&
+				(testMove(getCor(i), getCor(i-1)) || testMove(getCor(i), getCor(i+1)) || 
+					testMove(getCor(i), getCor(i-9)) || testMove(getCor(i), getCor(i-8)) || 
+					testMove(getCor(i), getCor(i-7)))){
+				return false;
+			} else if(isTurnWhite == board[i]->isWhite()){
+				for(int j=0; j<64;++j){
+					if(j==i){
+						continue;
+					} else if(testMove(getCor(i), getCor(j))){
+						return false;
+					}
+				}
+			} else {
+				continue;
+			}
 		}
+	}
 	return true;
 }
 
@@ -376,9 +404,9 @@ string Board::sendToDisplay() const{
 }
 
 void Board::setTurn(string colour){
-	if("black" == colour && "BLACK" == colour){
+	if("black" == colour || "BLACK" == colour){
 		isTurnWhite = false;
-	} else if ("white" == colour && "white" == colour){
+	} else if ("white" == colour || "WHITE" == colour){
 		isTurnWhite = true;
 	}
 }

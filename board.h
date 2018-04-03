@@ -26,7 +26,7 @@ public:
 	void clearBoard(); // clears all the current pieces from the board 
 	void normalSetup(); // default configuration for a game
 	void place(char piece, const std::string &cmd); // only used during setup mode 
-	bool validBoard() const; // only used during setup mode, checks if board is in a valid
+	bool validBoard(); // only used during setup mode, checks if board is in a valid
 	// setup
 	void newPlayers(int player1, int player2); // generate two new players
 	void setTurn(std::string colour); //sets turn to colour

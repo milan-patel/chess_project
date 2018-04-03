@@ -67,6 +67,10 @@ void game(Board *b){
 		if (action == "move") {
 			cin >> start >> end;
 			// insert move method
+			if(start.len() != 2 || end.len() != 2){
+				cout << "Invalid move. Try again." << endl;
+				continue;
+			}
 			b->move(start,end);
 			if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
 				char prom;
