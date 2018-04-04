@@ -24,6 +24,16 @@ Comp::Comp(int level, bool white): Player{white}, level{level} {}
 
 
 void Comp::generateMove(Board *b, std::string &first, std::string &last){
+	if(1 == level){
+		genMove1(b,first, last);
+	} else if(2 == level){
+	} else if(3 == level){
+	} else if(4 == level){
+	} else{
+	}
+}
+
+void Comp::genMove1(Board *b, std::string &first, std::string &last){
 	std::vector <Piece *> myTeam; 
 	for(int i=0; i<64; ++i){
 		if(b->getBoard()[i]->isWhite() == isPlayerWhite()){
