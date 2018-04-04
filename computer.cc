@@ -11,7 +11,7 @@ Comp::Comp(int level, bool white): Player{white}, level{level} {}
 
 
 std::string Comp::generateMove(Board *b, std::string &first, std::string &last){
-	vector <Piece *> myTeam; 
+	std::vector <Piece *> myTeam; 
 	for(int i=0; i<64; ++i){
 		if(b->getBoard()[i]->isWhite == isPlayerWhite()){
 			myTeam.push_back(b->getBoard()[i]); //adds 
