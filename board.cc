@@ -86,7 +86,7 @@ void Board::newPlayers(int player1, int player2){
 	if(player2 == 0){
 		p2 = new Player(false);
 	} else if(player2 > 0){
-		p2 = new Comp(player2, true);
+		p2 = new Comp(player2, false);
 	}
 }
 
@@ -279,9 +279,9 @@ void Board::endGame(string cmd){
 		s->resign(false);
 	} else if (cmd == "draw"){
 		s->tie();
-	} else {
-		return;
 	}
+	clearBoard();
+	gd->clearBoard();
 }
 
 bool Board::isGameOver(){
@@ -496,6 +496,7 @@ bool Board::isP2computer(){// checks if P2 is a computer
 }
 
 void Board::makeCompMove(string &start, string &last){
+	cout << "this is messed up" << endl;
 	if(isTurnWhite){
 		p1->generateMove(this,start,last);
 	} else {

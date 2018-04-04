@@ -86,13 +86,14 @@ void game(Board *b){
 					}
 					b->move(start,end);
 					if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
-						char prom;
+						cout << "Your pawn has been promoted. Select a piece" << endl;
+						string prom;
 						cin >> prom;
-						while (!('r' == prom || prom == 'n' || 'q' == prom || 'b' == prom)){
+						while (!('r' == prom[0] || prom[0] == 'n' || 'q' == prom[0] || 'b' == prom[0])){
 							cout << "Invalid promotion" << endl;
 							cin >> prom;
 						}
-						b->place(prom, end);
+						b->place(prom[0], end);
 					}
 					if(b->isGameOver()){
 						break;
@@ -120,23 +121,24 @@ void game(Board *b){
 					}
 					b->move(start,end);
 					if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
-						char prom;
+						cout << "Your pawn has been promoted. Select a piece" << endl;
+						string prom;
 						cin >> prom;
-						while (!('R' == prom || prom == 'N' || 'Q' == prom || 'B' == prom)){
+						while (!('R' == prom[0] || prom[0] == 'N' || 'Q' == prom[0] || 'B' == prom[0])){
 							cout << "Invalid promotion" << endl;
 							cin >> prom;
 						}
-						b->place(prom, end);
-					}
-					if(b->isGameOver()){
-						break;
+						b->place(prom[0], end);
 					}
 					cout << b->sendToDisplay();
 				}	
 				else if (action == "resign") {
 						b->endGame("white resigns");
 						break;
-					}
+				}
+			}
+			if(b->isGameOver()){
+				break;
 			}
 		}
 	} else {
@@ -151,6 +153,7 @@ void game(Board *b){
 				}
 				b->move(start,end);
 				if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
+					cout << "Your pawn has been promoted. Select a piece" << endl;
 					string prom;
 					cin >> prom;
 					bool validProm = false;
@@ -167,6 +170,7 @@ void game(Board *b){
 							cout << "Invalid promotion" << endl;
 						}
 					}
+					b->place(prom[0], end);
 				}
 				if(b->isGameOver()){
 					break;
