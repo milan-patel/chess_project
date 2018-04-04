@@ -92,6 +92,7 @@ void Board::newPlayers(int player1, int player2){
 
 void Board::place(char piece, const string &cmd){ 
 	// calling this function with piece == 'E' or 'e' will leave that space empty
+	char p = piece;
 	int index = getPos(cmd);
 	bool isWhite = ('A' < piece) && ('Z' > piece);
 	if (!isWhite){

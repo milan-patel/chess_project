@@ -119,7 +119,10 @@ void GraphicsDisplay::setPiece(char piece, const string &start){
 	int row = flipRow(start[1] - '1');
 	string s = pieceToString(piece);
 	int pieceColour = findPieceColour(piece);	
+	int rectFillColour = findRectangleColour(col,row);
+	xw.fillRectangle(col*cellsize,row*cellsize,cellsize,cellsize,rectFillColour);
 	xw.drawString(col*cellsize + 10, row*cellsize + yPadding, s, pieceColour);
+	
 }
 
 int GraphicsDisplay::flipRow(int row){
