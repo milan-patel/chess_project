@@ -189,11 +189,48 @@ void Board::move(const string &start, const string &end){
 		delete board[getPos(end)];
 		board[getPos(end)] = p;
 		p->changePos(getPos(end));
-		p->moved();
 		board[getPos(start)] = new Empty(getPos(start));
+		if(board[getPos(end)]->Type() == 'K' && !inCheck){ // handles the case of castling 
+			if(start == "e1" && end == "g1"){
+				Piece *castle = getPiece("h1");
+				delete board[61];
+				board[getPos("f1")] = castle;
+				castle->changePos(61);
+				board[63] = new Empty(63);
+				castle->moved();
+				gd->updateMove('R',"h1","f1");
+			} else if(start == "e1" && end == "c1"){
+				Piece *castle = getPiece("a1");
+				delete board[59];
+				board[getPos("d1")] = castle;
+				castle->changePos(59);
+				board[56] = new Empty(56);
+				castle->moved();
+				gd->updateMove('R',"a1","f1");
+			}
+		} else if(board[getPos(end)]->Type() == 'k' && !inCheck){ 
+			if(start == "e8" && end == "g8"){
+				Piece *castle = getPiece("h8");
+				delete board[5];
+				board[getPos("f8")] = castle;
+				castle->changePos(5);
+				board[7] = new Empty(7);
+				castle->moved();
+				gd->updateMove('r',"h8","f8");
+			} else if(start == "e8" && end == "c8"){
+				Piece *castle = getPiece("a8");
+				delete board[3];
+				board[getPos("d8")] = castle;
+				castle->changePos(3);
+				board[0] = new Empty(0);
+				castle->moved();
+				gd->updateMove('r',"a8","d8");
+			}
+		}
 		isTurnWhite = (! isTurnWhite);
 		gd->updateMove(board[getPos(end)]->Type(),start,end);
 		inCheck = isCheck(isTurnWhite);
+		p->moved();
 		if(isCheck(true)){
 			s->check(true);
 		} else if(isCheck(false)){
@@ -244,7 +281,6 @@ void Board::endGame(string cmd){
 	} else {
 		return;
 	}
-	normalSetup();
 }
 
 bool Board::isGameOver(){

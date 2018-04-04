@@ -10,7 +10,8 @@ class Comp: public Player {
 	int level;
 public:
 	Comp(int level,bool white);
-	std::string generateMove(Board *b);
+	int cpuLevel();
+	void generateMove(Board *b, std::string &first, std::string &last);
 };
 
 #endif

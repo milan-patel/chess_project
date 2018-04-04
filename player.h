@@ -7,7 +7,8 @@ class Player {
 	bool isWhite;
 public:
 	Player(bool white);
-	void move(std::string begin, std::string end);
+	bool isPlayerWhite();
+	virtual void move(std::string begin, std::string end);
 };
 
 #endif
