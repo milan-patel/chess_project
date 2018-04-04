@@ -1,6 +1,16 @@
 #include "board.h"
 #include "bishop.h"
 #include <string>
+#include <iostream>
+
+// static helpers 
+static bool onRight(int i){
+	return (7 == (i % 8)) ? true : false;
+}
+
+static bool onLeft(int i){
+	return (0 == (i % 8)) ? true : false;
+}
 
 // 2 Parameter ctor
 Bishop::Bishop(int pos, bool isWhite) : Piece(pos, isWhite) {}
@@ -27,7 +37,7 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 			}
 			else if (!b[begin]->isEmpty()) {
 				return false;
-			}
+			} 
 			else {
 				begin += 7;
 			}
@@ -55,6 +65,9 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 
 	// moving down on the left diagonal
 	else if (begin % 9 == fin % 9 && begin < fin) {
+		if(onLeft(begin)){
+				return false;
+		}
 		while (true) {
 			begin += 9;
 			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
@@ -66,6 +79,9 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 			else if (!b[begin]->isEmpty()) {
 				return false;
 			}
+			else if(onRight(begin)){
+				return false;
+			}
 			else {
 				begin += 9;
 			}
@@ -74,6 +90,9 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 
 	// moving up on the left diagonal
 	else if (begin % 9 == fin % 9 && begin > fin) {
+		if (onRight(begin)){
+				return false;
+		}
 		while (true) {
 			begin -= 9;
 			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
@@ -83,6 +102,9 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 				return true;
 			}
 			else if (!b[begin]->isEmpty()) {
+				return false;
+			}
+			else if(onLeft(begin)){
 				return false;
 			}
 			else {

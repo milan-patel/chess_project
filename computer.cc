@@ -37,7 +37,7 @@ void Comp::genMove1(Board *b, std::string &first, std::string &last){
 	std::vector <Piece *> myTeam; 
 	for(int i=0; i<64; ++i){
 		if(b->getBoard()[i]->isWhite() == isPlayerWhite()){
-			myTeam.push_back(b->getBoard()[i]); //adds 
+			myTeam.push_back(b->getBoard()[i]);
 		}
 	}
 	std::srand(std::time(nullptr)); // use current time as seed
