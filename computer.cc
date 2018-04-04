@@ -53,7 +53,7 @@ void Comp::genMove1(Board *b, std::string &first, std::string &last){
 			}
 			start = std::rand()/((RAND_MAX + 1u)/myTeam.size());
 		}
-	} else{
+	} else {
 		while(end == -1){	
 			for(int k=0; k<64; ++k){
 				if(b->testMove(convert(start),convert(k))){
