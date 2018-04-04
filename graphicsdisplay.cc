@@ -58,12 +58,12 @@ void GraphicsDisplay::defaultDisplay(){
 			s = "Rook";
 		}
 		else if(i == 1|| i == 6){
-			s = "Bishop";
-		}
-		else if(i == 2 || i == 5){
 			s = "Knight";
 		}
-		else if(i == 4){
+		else if(i == 2 || i == 5){
+			s = "Bishop";
+		}
+		else if(i == 3){
 			s = "Queen";
 		}
 		else{
@@ -115,11 +115,11 @@ int GraphicsDisplay::findRectangleColour(int col, int row){
 }
 
 void GraphicsDisplay::setPiece(char piece, const string &start){
-	int row = start[0] - 'a';
-	int col = start[1] - '1';
+	int col = start[0] - 'a';
+	int row = flipRow(start[1] - '1');
 	string s = pieceToString(piece);
 	int pieceColour = findPieceColour(piece);	
-	xw.drawString(row*cellsize, col*cellsize + 5, s, pieceColour);
+	xw.drawString(col*cellsize + 10, row*cellsize + yPadding, s, pieceColour);
 }
 
 int GraphicsDisplay::flipRow(int row){
@@ -155,7 +155,6 @@ void GraphicsDisplay::updateMove(char piece,const string &start, const string &e
 	int colStart = start[0] - 'a';
 	int rowEnd = flipRow(end[1] - '1');
 	int colEnd = end[0] - 'a';
-	cout << "rowStart: " << rowStart << "colStart: " << colStart << "rowEnd: " << rowEnd << "colEnd: " << colEnd<<endl;
 	string s = pieceToString(piece);
 	int pieceColour = findPieceColour(piece);
 	int rectFillColourStart = findRectangleColour(colStart,rowStart);
