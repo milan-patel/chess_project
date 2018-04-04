@@ -11,7 +11,8 @@ class Comp: public Player {
 public:
 	Comp(int level,bool white);
 	int cpuLevel();
-	void generateMove(Board *b, std::string &first, std::string &last);
+	void generateMove(Board *b, std::string &first, std::string &last) override;
+	bool isComputer() const override;
 };
 
 #endif

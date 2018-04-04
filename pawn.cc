@@ -3,7 +3,7 @@
 #include "pawn.h"
 #include "board.h"
 
-Pawn::Pawn(int pos, bool isWhite): Piece{pos,isWhite}, firstMove{true}, canCaptureByEnPassant{false} {}
+Pawn::Pawn(int pos, bool isWhite): Piece{pos,isWhite}, firstMove{true} {}
 
 bool Pawn::isEmpty() const {
 	return false;
@@ -14,12 +14,7 @@ bool Pawn::first() const {
 }
 
 void Pawn::moved() {
-	if(firstMove){
-		firstMove = false;
-		enpassant = true;
-	} else {
-		enpassant = false;
-	}
+	firstMove = false;
 }
 
 bool Pawn::canMove(const std::string &start,const std::string &end, Piece ** b) const {
@@ -129,10 +124,6 @@ bool Pawn::canMove(const std::string &start,const std::string &end, Piece ** b) 
 		}
 	}
 	return false;
-}
-
-bool enpassant() const{
-	return canCaptureByEnPassant;
 }
 
 char Pawn::Type() const {
