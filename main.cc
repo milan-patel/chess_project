@@ -70,7 +70,7 @@ void game(Board *b){
 		if (action == "move") {
 			cin >> start >> end;
 			// insert move method
-			if(start.len() != 2 || end.len() != 2){
+			if(start.length() != 2 || end.length() != 2){
 				cout << "Invalid move. Try again." << endl;
 				continue;
 			}
