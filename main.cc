@@ -66,46 +66,124 @@ void game(Board *b){
 		b->normalSetup();
 	}
 	cout << b->sendToDisplay();
-	while (cin >> action) {
-		// move command
-		if (action == "move") {
-			cin >> start >> end;
-			// insert move method
-			if(start.length() != 2 || end.length() != 2){
-				cout << "Invalid move. Try again." << endl;
-				continue;
-			}
-			b->move(start,end);
-			if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
-				char prom;
-				cin >> prom;
-				if (!b->getTurnStatus() && 
-					('R' == prom || prom == 'N' || 'Q' == prom || 'B' == prom)) {
-					b->place(prom, end);
-				}
-				else if ('r' == prom || prom == 'n' || 
-					'q' == prom || 'b' == prom) {
-					b->place(prom, end);
-				}
-				else {
-					cout << "Invalid promotion" << endl;
-				}
-			}
-			if(b->isGameOver()){
-				break;
-			}
+	if(b->isP1computer() && b->isP2computer()){
+		while(!b->isGameOver()){
+			b->makeCompMove(start,end);
 			cout << b->sendToDisplay();
 		}
-		else if (action == "resign") {
-			// insert resign method
+	} else if(b->isP1computer()){
+		while(true){
 			if(b->getTurnStatus()){
-				b->endGame("white resigns");
+				b->makeCompMove(start,end);
 			} else {
-				b->endGame("black resigns");
+				cin >> action;
+				if (action == "move") {
+					cin >> start >> end;
+					// insert move method
+					if(start.length() != 2 || end.length() != 2){
+						cout << "Invalid move. Try again." << endl;
+						continue;
+					}
+					b->move(start,end);
+					if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
+						char prom;
+						cin >> prom;
+						while (!('r' == prom || prom == 'n' || 'q' == prom || 'b' == prom)){
+							cout << "Invalid promotion" << endl;
+							cin >> prom;
+						}
+						b->place(prom, end);
+					}
+					if(b->isGameOver()){
+						break;
+					}
+					cout << b->sendToDisplay();
+				}	
+				else if (action == "resign") {
+						b->endGame("black resigns");
+						break;
+					}
 			}
-			break;
 		}
-	}
+	} else if(b->isP2computer()){
+		while(true){
+			if(!b->getTurnStatus()){
+				b->makeCompMove(start,end);
+			} else {
+				cin >> action;
+				if (action == "move") {
+					cin >> start >> end;
+					// insert move method
+					if(start.length() != 2 || end.length() != 2){
+						cout << "Invalid move. Try again." << endl;
+						continue;
+					}
+					b->move(start,end);
+					if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
+						char prom;
+						cin >> prom;
+						while (!('R' == prom || prom == 'N' || 'Q' == prom || 'B' == prom)){
+							cout << "Invalid promotion" << endl;
+							cin >> prom;
+						}
+						b->place(prom, end);
+					}
+					if(b->isGameOver()){
+						break;
+					}
+					cout << b->sendToDisplay();
+				}	
+				else if (action == "resign") {
+						b->endGame("white resigns");
+						break;
+					}
+			}
+		}
+	} else {
+		while (cin >> action) { // 
+			// move command
+			if (action == "move") {
+				cin >> start >> end;
+				// insert move method
+				if(start.length() != 2 || end.length() != 2){
+					cout << "Invalid move. Try again." << endl;
+					continue;
+				}
+				b->move(start,end);
+				if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
+					string prom;
+					cin >> prom;
+					bool validProm = false;
+					while(!validProm){
+						if (!b->getTurnStatus() && 
+						('R' == prom[0] || prom[0] == 'N' || 'Q' == prom[0] || 'B' == prom[0])) {
+							validProm = true;
+						}
+						else if ('r' == prom[0] || prom[0] == 'n' || 
+							'q' == prom[0] || 'b' == prom[0]) {
+							validProm = true;
+						}
+						else {
+							cout << "Invalid promotion" << endl;
+						}
+					}
+				}
+				if(b->isGameOver()){
+					break;
+				}
+				cout << b->sendToDisplay();
+			}
+			else if (action == "resign") {
+				// insert resign method
+				if(b->getTurnStatus()){
+					b->endGame("white resigns");
+				} else {
+					b->endGame("black resigns");
+				}
+				break;
+			}
+		}
+	} 
 }
 
 void players(Board *b){

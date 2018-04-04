@@ -3,12 +3,16 @@
 #include "queen.h"
 #include <iostream>
 
+// 2 Parameter ctor
 Queen::Queen(int pos, bool isWhite): Piece(pos,isWhite){}
 
+// determines whether a Queen can move to the desired end coordinates
 bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b) const{
 	int begin = getPos(start);
 	int fin = getPos(end);
-	if ((begin % 8 == fin % 8) && begin > fin) { // the Queen is moving up
+
+	// Queen is moving upwards
+	if ((begin % 8 == fin % 8) && begin > fin) {
 		begin -= 8;
 		while (begin != fin) {
 			if (!b[begin]->isEmpty()) {
@@ -18,13 +22,17 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 		}
 		if (b[begin]->isEmpty()) {
 			return true;
-		} else if(b[begin]->isWhite() == isWhite()){
+		}
+		else if (b[begin]->isWhite() == isWhite()) {
 			return false;
-		} else {
+		}
+		else {
 			return true;
 		}
 	}
-	else if ((begin % 8 == fin % 8) && begin < fin) {// the Queen is moving down
+
+	// Queen is moving downwards
+	else if ((begin % 8 == fin % 8) && begin < fin) {
 		begin += 8;
 		while (begin != fin) {
 			if (!b[begin]->isEmpty()) {
@@ -34,13 +42,17 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 		}
 		if (b[begin]->isEmpty()) {
 			return true;
-		} else if(b[begin]->isWhite() == isWhite()){
+		}
+		else if (b[begin]->isWhite() == isWhite()) {
 			return false;
-		} else {
+		}
+		else {
 			return true;
 		}
 	}
-	else if ((begin / 8) == (fin / 8) && (begin > fin)) {// the Queen is moving right
+
+	// Queen is moving rightwards
+	else if ((begin / 8) == (fin / 8) && (begin > fin)) {
 		begin--;
 		while (begin != fin) {
 			if (!b[begin]->isEmpty()) {
@@ -50,13 +62,17 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 		}
 		if (b[begin]->isEmpty()) {
 			return true;
-		} else if(b[begin]->isWhite() == isWhite()){
+		}
+		else if (b[begin]->isWhite() == isWhite()) {
 			return false;
-		} else {
+		}
+		else {
 			return true;
 		}
 	}
-	else if ((begin / 8) == (fin / 8) && (begin < fin)) {// the Queen is moving left
+
+	// Queen is moving leftwards
+	else if ((begin / 8) == (fin / 8) && (begin < fin)) {
 		begin++;
 		while (begin != fin) {
 			if (!b[begin]->isEmpty()) {
@@ -66,22 +82,26 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 		}
 		if (b[begin]->isEmpty()) {
 			return true;
-		} else if(b[begin]->isWhite() == isWhite()){
+		}
+		else if (b[begin]->isWhite() == isWhite()) {
 			return false;
-		} else {
+		}
+		else {
 			return true;
 		}
 	}
-	else if (begin % 9 == fin % 9 && begin < fin) { // the Queen is moving diagonally
+
+	// Queen is moving diagonally upwards
+	else if (begin % 9 == fin % 9 && begin < fin) {
 		while (true) {
 			begin += 9;
 			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
 				return true;
 			}
-			else if(begin == fin && b[begin]->isEmpty()) {
+			else if (begin == fin && b[begin]->isEmpty()) {
 				return true;
 			}
-			else if(!b[begin]->isEmpty()) {
+			else if (!b[begin]->isEmpty()) {
 				return false;
 			}
 			else {
@@ -89,6 +109,8 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 			}
 		}
 	}
+
+	// Queen is moving diagonally downwards
 	else if (begin % 9 == fin % 9 && begin > fin) {
 		while (true) {
 			begin -= 9;
@@ -106,6 +128,8 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 			}
 		} 
 	}
+
+	// corners
 	else if (!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin < fin) {
 		while (true) {
 			begin += 7;
@@ -123,6 +147,8 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 			}
 		}
 	}
+
+	// corners
 	else if (!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin > fin) {
 		while (true) {
 			begin -= 7;
@@ -145,10 +171,12 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 	}
 }
 
+// returns a char representing the Queen for whichever player's turn it is
 char Queen::Type() const {
 	return isWhite() ? 'Q' : 'q';
 }
 
+// returns if the Queen object is empty
 bool Queen::isEmpty() const {
 	return false;
 }
