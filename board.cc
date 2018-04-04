@@ -45,6 +45,7 @@ void Board::normalSetup(){
 	for(int i=0; i<64; ++i){
 		delete board[i];
 	}
+	gd->clearBoard();
 	// setting up a new black team
 	board[0] = new Rook(0,false); // back row
 	board[1] = new Knight(1,false);

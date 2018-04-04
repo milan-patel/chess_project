@@ -5,11 +5,14 @@
 using namespace std;
 
 bool requiresDefaultSetup = true;
-
+GraphicsDisplay *g = nullptr;
 void setup(Board *b){
-	b->clearBoard();
 	requiresDefaultSetup = false;
-	GraphicsDisplay *g = new GraphicsDisplay();
+	if(!g){
+	g = new GraphicsDisplay();
+	b->setgd(g);
+	}
+	b->clearBoard();
 	string action;
 	char piece;
 	string colour;
@@ -61,8 +64,10 @@ void game(Board *b){
 	string start;
 	string end;
 	if(requiresDefaultSetup){
-		GraphicsDisplay *gd = new GraphicsDisplay();
-		b->setgd(gd);
+		if(!g){
+		g = new GraphicsDisplay();
+		b->setgd(g);
+		}
 		b->normalSetup();
 	}
 	cout << b->sendToDisplay();
