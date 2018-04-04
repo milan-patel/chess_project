@@ -3,14 +3,15 @@
 #ifndef _GRP_H
 #define _GRP_H
 class GraphicsDisplay{
-	int windowsize = 500;
-	Xwindow xw;
+	int windowsize = 625;
+	Xwindow* xw = nullptr;
 	int colourPositive = Xwindow::Brown;
 	int colourNegative = Xwindow::Orange;
 	int flipRow(int row);
 	public:
 	//ctor
 	GraphicsDisplay();
+	~GraphicsDisplay();
 	//constants
 	const int gridsize = 8;
 	const int cellsize = windowsize/gridsize; 
