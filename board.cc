@@ -486,3 +486,20 @@ Piece *Board::getPiece(const string &cmd) const{
 void Board::setgd(GraphicsDisplay *g) {
 	this->gd = g;
 }
+
+bool Board::isP1computer(){
+	return p1->isComputer();
+}
+
+bool Board::isP2computer(){// checks if P2 is a computer
+	return p2->isComputer();
+}
+
+void Board::makeCompMove(string &start, string &last){
+	if(isTurnWhite){
+		p1->generateMove(this,start,last);
+	} else {
+		p2->generateMove(this,start,last);
+	}
+	move(start,last);
+}

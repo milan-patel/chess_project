@@ -3,5 +3,8 @@
 
 Player::Player(bool white): isWhite{white}{}
 
-void Player::move(std::string begin, std::string end){}
+void Player::generateMove(Board *b, std::string &first, std::string &last){}
 
+bool Player::isComputer() const{
+	return false;
+}

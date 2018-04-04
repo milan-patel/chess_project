@@ -4,7 +4,7 @@
 #include "board.h"
 
 // 2 Parameter ctor
-Pawn::Pawn(int pos, bool isWhite): Piece{pos,isWhite}, firstMove{true}, canCaptureByEnPassant{false} {}
+Pawn::Pawn(int pos, bool isWhite): Piece{pos,isWhite}, firstMove{true} {}
 
 // returns if a Pawn is empty
 bool Pawn::isEmpty() const {
@@ -18,13 +18,7 @@ bool Pawn::first() const {
 
 // helper to en passant
 void Pawn::moved() {
-	if (firstMove) {
-		firstMove = false;
-		enpassant = true;
-	}
-	else {
-		enpassant = false;
-	}
+	firstMove = false;
 }
 
 // determines whether a Pawn can move to the desired end coordinates
@@ -163,11 +157,6 @@ bool Pawn::canMove(const std::string &start,const std::string &end, Piece ** b) 
 		}
 	}
 	return false;
-}
-
-// performs en passant
-bool enpassant() const{
-	return canCaptureByEnPassant;
 }
 
 // returns the char representing a Pawn for a player's turn
