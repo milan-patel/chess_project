@@ -120,7 +120,7 @@ void Board::place(char piece, const string &cmd){
 		delete board[index];
 		board[index] = new Empty(index);
 	}
-	gd->setPiece(piece,cmd);
+	gd->setPiece(p,cmd);
 }
 
 
@@ -229,6 +229,7 @@ void Board::move(const string &start, const string &end){
 			}
 		}
 		isTurnWhite = (! isTurnWhite);
+		gd->updateTurn(isTurnWhite);
 		gd->updateMove(board[getPos(end)]->Type(),start,end);
 		inCheck = isCheck(isTurnWhite);
 		p->moved();
@@ -451,6 +452,7 @@ void Board::setTurn(string colour){
 	} else if ("white" == colour || "WHITE" == colour){
 		isTurnWhite = true;
 	}
+	gd->updateTurn(isTurnWhite);
 }
 
 
