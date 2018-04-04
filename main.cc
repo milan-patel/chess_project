@@ -19,7 +19,7 @@ void setup(Board *b){
 		// placing a piece
 		if (action[0] == '+') {
 			cin >> piece >> coord;
-			if (coord[0] >= 'a' && coord[0] <= 'g' && 
+			if (coord[0] >= 'a' && coord[0] <= 'h' && 
 				coord[1] >= '1' && coord[1] <= '8') {
 				b->place(piece, coord);
 				cout << b->sendToDisplay();
@@ -35,10 +35,11 @@ void setup(Board *b){
 		// removing a piece
 		else if (action[0] == '-') {
 			cin >> coord;
-			if (coord[0] >= 'a' && coord[0] <= 'g' &&
-				coord[1] >= '1' && coord[0] <= '8') {
+			if (coord[0] >= 'a' && coord[0] <= 'h' &&
+				coord[1] >= '1' && coord[1] <= '8') {
 				// insert remove method
 				b->place('e',coord);
+				cout << b->sendToDisplay();
 		}
 	}
 

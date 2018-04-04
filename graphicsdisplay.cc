@@ -46,11 +46,11 @@ void GraphicsDisplay::defaultDisplay(){
 		else{
 			s = "King";
 		}
-		xw.drawString(i*cellsize+10, yPadding, s, Xwindow::Black);
+		xw.drawString(i*cellsize+xPadding, yPadding, s, Xwindow::Black);
 	}
 	// fill in black pawns
 	for(int i =0; i< gridsize; ++i){
-		xw.drawString(i*cellsize+10, cellsize + yPadding, "Pawn", Xwindow::Black);
+		xw.drawString(i*cellsize+xPadding, cellsize + yPadding, "Pawn", Xwindow::Black);
 	}
 	// fill in white pieces
 	for(int i = 0; i < gridsize; ++i){
@@ -69,11 +69,11 @@ void GraphicsDisplay::defaultDisplay(){
 		else{
 			s = "King";
 		}
-		xw.drawString(i*cellsize+10, cellsize*7 +yPadding, s, Xwindow::White);
+		xw.drawString(i*cellsize+xPadding, cellsize*7 +yPadding, s, Xwindow::White);
 	}
 // fill in white pawns
 	for(int i =0; i< gridsize; ++i){
-		xw.drawString(i*cellsize+10, 6*cellsize + yPadding, "Pawn", Xwindow::White);
+		xw.drawString(i*cellsize+xPadding, 6*cellsize + yPadding, "Pawn", Xwindow::White);
 	}
 }
 
@@ -121,7 +121,7 @@ void GraphicsDisplay::setPiece(char piece, const string &start){
 	int pieceColour = findPieceColour(piece);	
 	int rectFillColour = findRectangleColour(col,row);
 	xw.fillRectangle(col*cellsize,row*cellsize,cellsize,cellsize,rectFillColour);
-	xw.drawString(col*cellsize + 10, row*cellsize + yPadding, s, pieceColour);
+	xw.drawString(col*cellsize + xPadding, row*cellsize + yPadding, s, pieceColour);
 	
 }
 
@@ -172,5 +172,5 @@ void GraphicsDisplay::updateMove(char piece,const string &start, const string &e
 	//Then Writes in the string name of the piece. 
 //        void drawString(int x, int y, std::string msg, int colour = Black);
 
-	xw.drawString(colEnd * cellsize + 10, (rowEnd)*cellsize + yPadding , s, pieceColour);
+	xw.drawString(colEnd * cellsize + xPadding, (rowEnd)*cellsize + yPadding , s, pieceColour);
 }

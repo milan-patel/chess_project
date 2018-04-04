@@ -15,6 +15,7 @@ class GraphicsDisplay{
 	const int gridsize = 8;
 	const int cellsize = windowsize/gridsize; 
 	const int yPadding = cellsize/2;
+	const int xPadding = cellsize/4;
 	//methods
 	int findRectangleColour(int col, int row);
 	int findPieceColour(char piece);
