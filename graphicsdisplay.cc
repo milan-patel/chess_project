@@ -30,6 +30,7 @@ GraphicsDisplay::GraphicsDisplay(){
         string whtScore = whtStream.str();
         string s = "B: " + blkScore + "  W: " + whtScore;
 	xw->drawBigString(0,50,s,Xwindow::Black);
+	updateTurn(true);
 }
 GraphicsDisplay::~GraphicsDisplay(){
 	delete xw;
