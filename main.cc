@@ -96,7 +96,9 @@ void game(Board *b){
 						cin >> prom;
 						while (!('r' == prom[0] || prom[0] == 'n' || 'q' == prom[0] || 'b' == prom[0])){
 							cout << "Invalid promotion" << endl;
-							cin >> prom;
+							if(!(cin >> prom)){
+								return;
+							}
 						}
 						b->place(prom[0], end);
 					}
@@ -131,7 +133,9 @@ void game(Board *b){
 						cin >> prom;
 						while (!('R' == prom[0] || prom[0] == 'N' || 'Q' == prom[0] || 'B' == prom[0])){
 							cout << "Invalid promotion" << endl;
-							cin >> prom;
+							if(!(cin >> prom)){
+								return;
+							}
 						}
 						b->place(prom[0], end);
 					}
@@ -160,9 +164,11 @@ void game(Board *b){
 				if (b->canPawnPromote()) { // requires input from the user in the case of pawn promotion
 					cout << "Your pawn has been promoted. Select a piece" << endl;
 					string prom;
-					cin >> prom;
 					bool validProm = false;
 					while(!validProm){
+						if(!(cin >> prom)){
+								return;
+						}
 						if (!b->getTurnStatus() && 
 						('R' == prom[0] || prom[0] == 'N' || 'Q' == prom[0] || 'B' == prom[0])) {
 							validProm = true;
