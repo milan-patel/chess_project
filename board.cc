@@ -17,32 +17,35 @@
 
 using namespace std;
 
-
+// 2 Parameter ctor
 Board::Board(int player1, int player2): board{new Piece*[64]}, isTurnWhite{true},
 		inCheck{false}, gameOver{true}, s{new Scoreboard()}, p1{new Player(true)}, p2{new Player(false)}{
-			for(int i=0; i<64; ++i){
+			for (int i = 0; i < 64; ++i) {
 				board[i] = new Empty(i);
 			}
-			if(player1 > 0){
+			if (player1 > 0) {
 				delete p1;
 				p1 = new Comp(player1, true);
-			} if(player2 > 0){
+			}
+			if (player2 > 0) {
 				delete p2;
 				p1 = new Comp(player2, false);
 			}
 		}
 
+// clears the Board and makes all spaces the Empty piece.
 void Board::clearBoard(){
-	for(int i=0; i<64; ++i){
+	for (int i = 0; i < 64; ++i) {
 		delete board[i];
 		board[i] = new Empty(i);
 	}
 }
 
+// sets up the Board to the default configuration of Chess
 void Board::normalSetup(){
 	setTurn("white");
 	gameOn();
-	for(int i=0; i<64; ++i){
+	for (int i = 0; i < 64; ++i) {
 		delete board[i];
 	}
 	gd->clearBoard();
@@ -55,14 +58,14 @@ void Board::normalSetup(){
 	board[5] = new Bishop(5,false);
 	board[6] = new Knight(6,false);
 	board[7] = new Rook(7, false);
-	for(int i=8; i < 16; ++i){
+	for (int i = 8; i < 16; ++i) {
 		board[i] = new Pawn(i,false); // row of pawns
 	}
-	for(int j=16; j < 48; ++j){
+	for (int j = 16; j < 48; ++j) {
 		board[j] = new Empty(j); // empty space
 	}
 	// setting up a new white team
-	for(int k=48; k < 56; ++k){
+	for (int k = 48; k < 56; ++k) {
 		board[k] = new Pawn(k,true); // row of pawns
 	}
 	board[56] = new Rook(56,true); // back row
@@ -76,22 +79,26 @@ void Board::normalSetup(){
 	gd->defaultDisplay();
 }
 
+// adds Player objects (human or computer) to the Board
 void Board::newPlayers(int player1, int player2){
 	delete p1;
 	delete p2;
-	if(player1 == 0){
+	if (player1 == 0) {
 		p1 = new Player(true);
-	} else if(player1 > 0){
+	}
+	else if (player1 > 0) {
 		p1 = new Comp(player1, true);
 	}
-	if(player2 == 0){
+	if (player2 == 0) {
 		p2 = new Player(false);
-	} else if(player2 > 0){
+	}
+	else if (player2 > 0) {
 		p2 = new Comp(player2, false);
 	}
 }
 
-void Board::place(char piece, const string &cmd){ 
+// places a Piece on the Board
+void Board::place(char piece, const string &cmd) { 
 	// calling this function with piece == 'E' or 'e' will leave that space empty
 	char p = piece;
 	int index = getPos(cmd);
@@ -99,25 +106,33 @@ void Board::place(char piece, const string &cmd){
 	if (!isWhite){
 		piece = piece - 'a' + 'A';
 	}
-	if(piece == 'P'){
+
+	// cases for letters representing the different Pieces
+	if (piece == 'P') {
 		delete board[index];
 		board[index] = new Pawn(index, isWhite);
-	} else if(piece == 'R'){
+	}
+	else if (piece == 'R') {
 		delete board[index];
 		board[index] = new Rook(index,isWhite);
-	} else if(piece == 'Q'){
+	}
+	else if (piece == 'Q') {
 		delete board[index];
 		board[index] = new Queen(index,isWhite);
-	} else if(piece == 'B'){
+	}
+	else if (piece == 'B') {
 		delete board[index];
 		board[index] = new Bishop(index,isWhite);
-	} else if(piece == 'N'){
+	}
+	else if (piece == 'N') {
 		delete board[index];
 		board[index] = new Knight(index,isWhite);
-	} else if(piece == 'K'){
+	}
+	else if (piece == 'K') {
 		delete board[index];
 		board[index] = new King(index,isWhite);
-	} else if(piece == 'E'){
+	}
+	else if (piece == 'E') {
 		delete board[index];
 		board[index] = new Empty(index);
 	}
@@ -125,8 +140,8 @@ void Board::place(char piece, const string &cmd){
 }
 
 
-
-Board::~Board(){
+// Dtor, destroys the Board, Scoreboard, Players, and GraphicsDisplay
+Board::~Board() {
 	for(int i =0; i < 64;++i){ // deletes all piece pointers in the Board object
 		delete board[i];
 	}
@@ -137,19 +152,22 @@ Board::~Board(){
 	delete gd;
 }
 
-bool Board::testMove(const string &start, const string &end){
-	// tests out the move, mutates the board and assesses if the player is left in 
-	// check. If the move is valid, the function returns true, else it returns
-	// false. In either case, the board is mutated back to its original state
+
+// tests out the move, mutates the board and assesses if the player is left in 
+// check. If the move is valid, the function returns true, else it returns
+// false. In either case, the board is mutated back to its original state
+bool Board::testMove(const string &start, const string &end) {	
 	Piece *p = getPiece(start);
 	Piece *temp = getPiece(end);
 	if(p->isWhite() != getTurnStatus()){
 		return false;
 	}
-	if(p->canMove(start, end, getBoard())){
+
+	// temporarily move
+	if (p->canMove(start, end, getBoard())) {
 		board[getPos(end)] = p;
 		board[getPos(start)] = new Empty(getPos(start));
-		if(isCheck(isTurnWhite)){
+		if (isCheck(isTurnWhite)) {
 			delete board[getPos(start)];
 			board[getPos(start)] = p;
 			board[getPos(end)] = temp;
@@ -165,35 +183,38 @@ bool Board::testMove(const string &start, const string &end){
 	}
 }
 
+// determines if a Pawn can be promoted
 bool Board::canPawnPromote(){
-	for(int i = 0; i<8; ++i){
-		if('P' == board[i]->Type()){
+	for (int i = 0; i < 8; ++i) {
+		if ('P' == board[i]->Type()) {
 			return true;
 		}
 	}
-	for(int j =56; j<64; ++j){
-		if('p' == board[j]->Type()){
+	for (int j = 56; j < 64; ++j) {
+		if ('p' == board[j]->Type()) {
 			return true;
 		}
 	}
 	return false;
 }
 
+// returns if the current turn belongs to the White player
 bool Board::getTurnStatus() const {
 	return isTurnWhite;
 }
 
+// performs the moving of the Pieces
 void Board::move(const string &start, const string &end){
 	// makes the move, if valid, and checks if the opposing player is now in check
 	// changes whose turn it is 
 	Piece *p = getPiece(start);
-	if(testMove(start,end)){
+	if (testMove(start,end)) {
 		delete board[getPos(end)];
 		board[getPos(end)] = p;
 		p->changePos(getPos(end));
 		board[getPos(start)] = new Empty(getPos(start));
-		if(board[getPos(end)]->Type() == 'K' && !inCheck){ // handles the case of castling 
-			if(start == "e1" && end == "g1"){
+		if (board[getPos(end)]->Type() == 'K' && !inCheck) { // handles the case of castling 
+			if (start == "e1" && end == "g1") {
 				Piece *castle = getPiece("h1");
 				delete board[61];
 				board[getPos("f1")] = castle;
@@ -201,7 +222,8 @@ void Board::move(const string &start, const string &end){
 				board[63] = new Empty(63);
 				castle->moved();
 				gd->updateMove('R',"h1","f1");
-			} else if(start == "e1" && end == "c1"){
+			}
+			else if (start == "e1" && end == "c1") {
 				Piece *castle = getPiece("a1");
 				delete board[59];
 				board[getPos("d1")] = castle;
@@ -210,8 +232,9 @@ void Board::move(const string &start, const string &end){
 				castle->moved();
 				gd->updateMove('R',"a1","f1");
 			}
-		} else if(board[getPos(end)]->Type() == 'k' && !inCheck){ 
-			if(start == "e8" && end == "g8"){
+		}
+		else if (board[getPos(end)]->Type() == 'k' && !inCheck) { 
+			if (start == "e8" && end == "g8") {
 				Piece *castle = getPiece("h8");
 				delete board[5];
 				board[getPos("f8")] = castle;
@@ -219,7 +242,8 @@ void Board::move(const string &start, const string &end){
 				board[7] = new Empty(7);
 				castle->moved();
 				gd->updateMove('r',"h8","f8");
-			} else if(start == "e8" && end == "c8"){
+			}
+			else if (start == "e8" && end == "c8") {
 				Piece *castle = getPiece("a8");
 				delete board[3];
 				board[getPos("d8")] = castle;
@@ -234,144 +258,177 @@ void Board::move(const string &start, const string &end){
 		gd->updateMove(board[getPos(end)]->Type(),start,end);
 		inCheck = isCheck(isTurnWhite);
 		p->moved();
-		if(isCheck(true)){
+		
+		if (isCheck(true)) {
 			s->check(true);
-		} else if(isCheck(false)){
-			s->check(false);
-		} else {
-
 		}
-		if (inCheck && isCheckmate()){
+		else if (isCheck(false)) {
+			s->check(false);
+		}
+
+		if (inCheck && isCheckmate()) {
 			string winner;
-			if(isTurnWhite){
+			if (isTurnWhite) {
 				winner = "black";
-			} else { 
+			}
+			else { 
 				winner = "white";
 			}
 			endGame(winner);
 			return; 
-		} else if(isStalemate()){
+		}
+		else if (isStalemate()) {
 			endGame("draw");
 			return;
 		}
 	}
 }
 
-bool Board::isCheck(bool isWhite){
+// determines if a Player is in check
+bool Board::isCheck(bool isWhite) {
 	string king = findKing(isWhite);
 	bool flag = false; // flag will change to true if an opposing piece can move
 	// to the space of the King 
-	for(int i=0; i<64; ++i){
-		if(board[i]->canMove(getCor(i),king, getBoard())){
+	for(int i = 0; i < 64; ++i){
+		if (board[i]->canMove(getCor(i),king, getBoard())) {
 			flag = true;
 		}
 	}
 	return flag;
 }
 
-void Board::endGame(string cmd){
+// ends the game and clears the board through a method calls
+void Board::endGame(string cmd) {
 	gameOver = true;
-	if(cmd == "black"){
+	if (cmd == "black") {
 		s->win(false);
-	} else if (cmd == "white"){
+		gd->updateScore(false,false);
+	}
+	else if (cmd == "white") {
 		s->win(true);
-	} else if (cmd == "white resigns"){
+		gd->updateScore(true,false);
+	}
+	else if (cmd == "white resigns") {
 		s->resign(true);
-	} else if (cmd == "black resigns"){
+		gd->updateScore(false,false);
+	}
+	else if (cmd == "black resigns") {
 		s->resign(false);
-	} else if (cmd == "draw"){
+		gd->updateScore(true,false);
+	}
+	else if (cmd == "draw") {
 		s->tie();
+		gd->updateScore(false,true);
 	}
 	clearBoard();
 	gd->clearBoard();
 }
 
+// accessor/getter: returns the gameOver field of the Board class
 bool Board::isGameOver(){
 	return gameOver;
 }
 
+// mutator/setter: sets the gameOver field of the Board class to false.
 void Board::gameOn(){
 	gameOver = false;
 }
 
-bool Board::validBoard(){
+// checks for Board validity
+bool Board::validBoard() {
 	int numBlackKings = 0;
 	int numWhiteKings = 0;
-	for(int i=0; i<8;++i){
-		if(board[i]->Type() =='P' || board[i]->Type() =='p'){
+	for (int i = 0; i < 8; ++i) {
+		if (board[i]->Type() =='P' || board[i]->Type() =='p') {
 			return false;
-		} else if(board[i]->Type() == 'K'){
+		}
+		else if (board[i]->Type() == 'K') {
 			++numWhiteKings;
-		} else if(board[i]->Type() == 'k'){
+		}
+		else if (board[i]->Type() == 'k') {
 			++numBlackKings;
 		}
 	}
-	for(int j=8; j<56;++j){
-		if(board[j]->Type() == 'K'){
+	for (int j = 8; j < 56; ++j) {
+		if (board[j]->Type() == 'K') {
 			++numWhiteKings;
-		} else if(board[j]->Type() == 'k'){
+		}
+		else if (board[j]->Type() == 'k') {
 			++numBlackKings;
 		}
 	}
-	for(int k=56; k<64;++k){
-		if(board[k]->Type() =='P' || board[k]->Type() =='p'){
+	for (int k = 56; k < 64; ++k) {
+		if (board[k]->Type() =='P' || board[k]->Type() =='p') {
 			return false;
-		} else if(board[k]->Type() == 'K'){
+		}
+		else if (board[k]->Type() == 'K') {
 			++numWhiteKings;
-		} else if(board[k]->Type() == 'k'){
+		}
+		else if (board[k]->Type() == 'k') {
 			++numBlackKings;
 		}
 	}
-	if ( numBlackKings != 1 || numWhiteKings != 1){
+	if (numBlackKings != 1 || numWhiteKings != 1) {
 		return false;
-	} else if (isCheckmate()){
+	}
+	else if (isCheckmate()) {
 		return false;
-	} else if (isStalemate()){
+	}
+	else if (isStalemate()) {
 		return false;
-	} else {
+	}
+	else {
 		return true;
 	}
 }
 
+// checks if there is a checkmate on the Board
 bool Board::isCheckmate() {
 	int king = getPos(findKing(isTurnWhite));
-	if(isTurnWhite){
-		for(int i=0;i<64; ++i){
+	if (isTurnWhite) {
+		for (int i = 0; i < 64; ++i) {
 			char type = board[i]->Type();
-			if(isTurnWhite == board[i]->isWhite() && 'P' == type &&
+			if (isTurnWhite == board[i]->isWhite() && 'P' == type &&
 				(testMove(getCor(i), getCor(i-1)) || testMove(getCor(i), getCor(i+1)) || 
 					testMove(getCor(i), getCor(i-9)) || testMove(getCor(i), getCor(i-8)) || 
-					testMove(getCor(i), getCor(i-7)))){
+					testMove(getCor(i), getCor(i-7)))) {
 				return false;
-			} else if(isTurnWhite == board[i]->isWhite()){
-				for(int j=0; j<64;++j){
-					if(j==i){
+			}
+			else if (isTurnWhite == board[i]->isWhite()) {
+				for (int j = 0; j < 64; ++j) {
+					if (j == i) {
 						continue;
-					} else if(testMove(getCor(i), getCor(j))){
+					}
+					else if (testMove(getCor(i), getCor(j))) {
 						return false;
 					}
 				}
-			} else{
+			}
+			else {
 				continue;
 			}
 		}
-	} else{
-		for(int i=0;i<64; ++i){
+	}
+	else {
+		for(int i = 0; i < 64; ++i) {
 			char type = board[i]->Type();
-			if(isTurnWhite == board[i]->isWhite() && 'p' == type &&
+			if (isTurnWhite == board[i]->isWhite() && 'p' == type &&
 				(testMove(getCor(i), getCor(i-1)) || testMove(getCor(i), getCor(i+1)) || 
 					testMove(getCor(i), getCor(i-9)) || testMove(getCor(i), getCor(i-8)) || 
-					testMove(getCor(i), getCor(i-7)))){
+					testMove(getCor(i), getCor(i-7)))) {
 				return false;
-			} else if(isTurnWhite == board[i]->isWhite()){
-				for(int j=0; j<64;++j){
-					if(j==i){
+			}
+			else if (isTurnWhite == board[i]->isWhite()) {
+				for (int j = 0; j < 64; ++j) {
+					if (j == i) {
 						continue;
-					} else if(testMove(getCor(i), getCor(j))){
+					}
+					else if (testMove(getCor(i), getCor(j))) {
 						return false;
 					}
 				}
-			} else {
+			}
+			else {
 				continue;
 			}
 		}
@@ -379,44 +436,52 @@ bool Board::isCheckmate() {
 	return true;
 }
 
+// checks if there is a stalemate on the Board
 bool Board::isStalemate(){
-	if(isTurnWhite){
-		for(int i=0;i<64; ++i){
+	if (isTurnWhite) {
+		for(int i = 0; i < 64; ++i) {
 			char type = board[i]->Type();
-			if(isTurnWhite == board[i]->isWhite() && 'P' == type &&
+			if (isTurnWhite == board[i]->isWhite() && 'P' == type &&
 				(testMove(getCor(i), getCor(i-1)) || testMove(getCor(i), getCor(i+1)) || 
 					testMove(getCor(i), getCor(i-9)) || testMove(getCor(i), getCor(i-8)) || 
-					testMove(getCor(i), getCor(i-7)))){
+					testMove(getCor(i), getCor(i-7)))) {
 				return false;
-			} else if(isTurnWhite == board[i]->isWhite()){
-				for(int j=0; j<64;++j){
-					if(j==i){
+			}
+			else if (isTurnWhite == board[i]->isWhite()) {
+				for (int j = 0; j < 64; ++j) {
+					if (j == i) {
 						continue;
-					} else if(testMove(getCor(i), getCor(j))){
+					}
+					else if (testMove(getCor(i), getCor(j))) {
 						return false;
 					}
 				}
-			} else {
+			}
+			else {
 				continue;
 			}
 		} 
-	} else {
-		for(int i=0;i<64; ++i){
+	}
+	else {
+		for (int i = 0; i < 64; ++i) {
 			char type = board[i]->Type();
-			if(isTurnWhite == board[i]->isWhite() && 'p' == type &&
+			if (isTurnWhite == board[i]->isWhite() && 'p' == type &&
 				(testMove(getCor(i), getCor(i-1)) || testMove(getCor(i), getCor(i+1)) || 
 					testMove(getCor(i), getCor(i-9)) || testMove(getCor(i), getCor(i-8)) || 
-					testMove(getCor(i), getCor(i-7)))){
+					testMove(getCor(i), getCor(i-7)))) {
 				return false;
-			} else if(isTurnWhite == board[i]->isWhite()){
-				for(int j=0; j<64;++j){
-					if(j==i){
+			}
+			else if (isTurnWhite == board[i]->isWhite()) {
+				for (int j = 0; j < 64; ++j) {
+					if (j == i) {
 						continue;
-					} else if(testMove(getCor(i), getCor(j))){
+					}
+					else if (testMove(getCor(i), getCor(j))) {
 						return false;
 					}
 				}
-			} else {
+			}
+			else {
 				continue;
 			}
 		}
@@ -424,86 +489,96 @@ bool Board::isStalemate(){
 	return true;
 }
 
+// sends the Board to be displayed as text
 string Board::sendToDisplay() const{
 	ostringstream oss;
 	char zero = '0';
 	int j = 0;
 	int end = 8;
-	for(int i = 8; i > 0; --i){
+	for(int i = 8; i > 0; --i) {
 		char temp = zero + i;
 		oss << temp << " "; 
-		for(;j<end; ++j){
+		for (; j < end; ++j) {
 			oss << (board[j]->Type());
 		}
 		end += 8;
 		oss << "\n";
 	}
 	oss << "\n  ";
-	for(int k=0; k <8; ++k){
+	for (int k = 0; k < 8; ++k) {
 		char temp = 'a' + k;
 		oss << temp;
 	}
 	oss << '\n';
+	oss << endl;
 	return oss.str();
 }
 
-void Board::setTurn(string colour){
-	if("black" == colour || "BLACK" == colour){
+// sets the turn of the Board to colour
+void Board::setTurn(string colour) {
+	if ("black" == colour || "BLACK" == colour) {
 		isTurnWhite = false;
-	} else if ("white" == colour || "WHITE" == colour){
+	}
+	else if ("white" == colour || "WHITE" == colour) {
 		isTurnWhite = true;
 	}
 	gd->updateTurn(isTurnWhite);
 }
 
-
-string Board::findKing(bool isWhite) const{
+// finds the Kings on the Board
+string Board::findKing(bool isWhite) const {
 	char king = 'k';
-	if(isWhite){
+	if (isWhite) {
 		king = 'K';
 	}
-	for(int i=0; i<64;++i){
-		if(king == (board[i])->Type()){
+	for (int i = 0; i < 64; ++i) {
+		if (king == (board[i])->Type()) {
 			return getCor(i); 
 		}
 	}
 	return "";
 }
 
-void Board::printScore() const{
+// calls the printScore method on the Scoreboard
+void Board::printScore() const {
 	s->printScore();
 }
 
+// accessor/getter: gets the Board
 Piece ** Board::getBoard(){
 	Piece ** tmp = board; 
 	return tmp;
 }
 
-
-Piece *Board::getPiece(const string &cmd) const{
-	// retrieves the piece stored at cmd
+// accessor/getter: gets the Piece stored at cmd
+Piece *Board::getPiece(const string &cmd) const {
 	int index = getPos(cmd);
 	return board[index];
 }
 
+// mutator/setter: sets the GraphicsDisplay to g
 void Board::setgd(GraphicsDisplay *g) {
 	this->gd = g;
 }
 
+// returns if Player 1 is a computer
 bool Board::isP1computer(){
 	return p1->isComputer();
 }
 
-bool Board::isP2computer(){ // checks if P2 is a computer
+// returns if Player 2 is a computer
+bool Board::isP2computer() {
 	return p2->isComputer();
 }
 
+// makes a move for the Computer
 void Board::makeCompMove(){
 	string start;
 	string last;
-	if(isTurnWhite){
+	if (isTurnWhite) {
 		p1->generateMove(this,start,last);
-	} else {
+	}
+	else {
 		p2->generateMove(this,start,last);
 	}
 	move(start,last);

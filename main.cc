@@ -238,8 +238,7 @@ int main () {
 	Board *b = new Board(0,0);
 	string cmd;
 
-	while (!cin.eof()) {
-		cin >> cmd;
+	while (cin >> cmd) {
 
 		// setup command
 		if (cmd == "setup") {
