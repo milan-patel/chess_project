@@ -45,6 +45,7 @@ void Board::normalSetup(){
 	for(int i=0; i<64; ++i){
 		delete board[i];
 	}
+	gd->clearBoard();
 	// setting up a new black team
 	board[0] = new Rook(0,false); // back row
 	board[1] = new Knight(1,false);
@@ -120,7 +121,7 @@ void Board::place(char piece, const string &cmd){
 		delete board[index];
 		board[index] = new Empty(index);
 	}
-	gd->setPiece(piece,cmd);
+	gd->setPiece(p,cmd);
 }
 
 
@@ -229,6 +230,7 @@ void Board::move(const string &start, const string &end){
 			}
 		}
 		isTurnWhite = (! isTurnWhite);
+		gd->updateTurn(isTurnWhite);
 		gd->updateMove(board[getPos(end)]->Type(),start,end);
 		inCheck = isCheck(isTurnWhite);
 		p->moved();
@@ -451,6 +453,7 @@ void Board::setTurn(string colour){
 	} else if ("white" == colour || "WHITE" == colour){
 		isTurnWhite = true;
 	}
+	gd->updateTurn(isTurnWhite);
 }
 
 

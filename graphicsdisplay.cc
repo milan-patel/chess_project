@@ -40,10 +40,10 @@ void GraphicsDisplay::clearBoard(){
 	for (int i = 1; i < gridsize-1; ++i){
 		for (int j = 1; j< gridsize-1; ++j){
 			if((i % 2 == 0 && j % 2 ==  0) || (i % 2 == 1 && j % 2 == 1)){
-				xw->fillRectangle(i*cellsize, j*cellsize, cellsize, cellsize, colourPositive);
+				xw->fillRectangle(i*cellsize, j*cellsize, cellsize, cellsize, colourNegative);
 			}
 			else{
-				xw->fillRectangle(i*cellsize, j*cellsize, cellsize, cellsize, colourNegative);
+				xw->fillRectangle(i*cellsize, j*cellsize, cellsize, cellsize, colourPositive);
 			}
 		}
 	}
@@ -75,7 +75,7 @@ void GraphicsDisplay::defaultDisplay(){
 		xw->drawString(i*cellsize+xPadding, 2*cellsize + yPadding, "Pawn", Xwindow::Black);
 	}
 	// fill in white pieces
-	for(int i = 0; i < gridsize; ++i){
+	for(int i = 1; i < gridsize-1; ++i){
 		if(i == 1 || i == 8){
 			s = "Rook";
 		}
@@ -129,10 +129,10 @@ int GraphicsDisplay::findPieceColour(char piece){
 
 int GraphicsDisplay::findRectangleColour(int col, int row){
 	if ((row % 2 == 0  && col % 2 == 0) || (row % 2 == 1 && col % 2 == 1)){
-		return colourPositive;
+		return colourNegative;
 	}
 	else{
-		return colourNegative;
+		return colourPositive;
 	}
 }
 
@@ -197,7 +197,7 @@ void GraphicsDisplay::updateMove(char piece,const string &start, const string &e
 }
 void GraphicsDisplay::clearTop(bool forTurn){
 if(forTurn){
-xw->fillRectangle(360,0, 225,50,Xwindow::White);
+xw->fillRectangle(360,0,265 ,50,Xwindow::White);
 }
 else{
 	xw->fillRectangle(0,0,300,50,Xwindow::White);
@@ -223,7 +223,7 @@ void GraphicsDisplay::updateScore(bool isWhiteWinner, bool isStalemate){
 	string blkScore = blkStream.str();
 	whtStream<<fixed<<setprecision(1)<<whiteScore;
 	string whtScore = whtStream.str();
-	string s = "Black: " + blkScore + " White: " + whtScore;
+	string s = "B:" + blkScore + "W:" + whtScore;
 	xw->drawBigString(0,50,s,Xwindow::Black);
 }
 void GraphicsDisplay::updateTurn(bool white){
