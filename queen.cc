@@ -60,7 +60,7 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 		}
 	}
 
-	// Queen is moving rightwards
+	// Queen is moving leftwards
 	else if ((begin / 8) == (fin / 8) && (begin > fin)) {
 		begin--;
 		while (begin != fin) {
@@ -80,7 +80,7 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 		}
 	}
 
-	// Queen is moving leftwards
+	// Queen is moving rightwards
 	else if ((begin / 8) == (fin / 8) && (begin < fin)) {
 		begin++;
 		while (begin != fin) {
@@ -100,13 +100,16 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 		}
 	}
 
-	// Queen is moving diagonally upwards
+	// Queen is moving diagonally downwards
 	else if (begin % 9 == fin % 9 && begin < fin) {
 		if(onLeft(begin)){
 				return false;
 		}
 		while (true) {
 			begin += 9;
+			if(begin > 63){
+				return false;
+			}
 			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
 				return true;
 			}
@@ -119,19 +122,19 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 			else if(onRight(begin)){
 				return false;
 			}
-			else {
-				begin += 9;
-			}
 		}
 	}
 
-	// Queen is moving diagonally downwards
+	// Queen is moving diagonally upwards
 	else if (begin % 9 == fin % 9 && begin > fin) {
 		if (onRight(begin)){
 				return false;
 		}
 		while (true) {
 			begin -= 9;
+			if(begin < 0){
+				return false;
+			}
 			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
 				return true;
 			}
@@ -144,9 +147,6 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 			else if(onLeft(begin)){
 				return false;
 			}
-			else {
-				begin -= 9;
-			}
 		} 
 	}
 
@@ -154,6 +154,9 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 	else if (!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin < fin) {
 		while (true) {
 			begin += 7;
+			if(begin > 63){
+				return false;
+			}
 			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
 				return true;
 			}
@@ -162,9 +165,6 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 			}
 			else if (!b[begin]->isEmpty()) {
 				return false;
-			}
-			else {
-				begin += 7;
 			}
 		}
 	}
@@ -173,6 +173,9 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 	else if (!(begin==0) && !(begin == 63) && (begin % 7 == fin % 7) && begin > fin) {
 		while (true) {
 			begin -= 7;
+			if(begin < 0){
+				return false;
+			}
 			if (begin == fin && (b[begin]->isEmpty() || (isWhite() != b[begin]->isWhite()))) {
 				return true;
 			}
@@ -181,9 +184,6 @@ bool Queen::canMove(const std::string &start, const std::string &end, Piece ** b
 			}
 			else if (!b[begin]->isEmpty()) {
 				return false;
-			}
-			else {
-				begin -= 7;
 			}
 		}
 	}

@@ -551,7 +551,7 @@ Piece ** Board::getBoard(){
 }
 
 // accessor/getter: gets the Piece stored at cmd
-Piece *Board::getPiece(const string &cmd) const {
+Piece *Board::getPiece(const string &cmd) {
 	int index = getPos(cmd);
 	return board[index];
 }

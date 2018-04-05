@@ -46,7 +46,7 @@ public:
 	
 
 	//  
-	Piece *getPiece(const std::string &cmd) const; // returns a pointer to the piece stored at
+	Piece *getPiece(const std::string &cmd); // returns a pointer to the piece stored at
 	// cmd
 	Piece ** getBoard(); // provides a copy of the board
 	// for other classes to reference

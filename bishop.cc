@@ -35,9 +35,6 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 			}
 			else if (!b[begin]->isEmpty()) {
 				return false;
-			} 
-			else {
-				begin += 7;
 			}
 		}
 	}
@@ -54,9 +51,6 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 			}
 			else if(!b[begin]->isEmpty()) {
 				return false;
-			}
-			else {
-				begin -= 7;
 			}
 		} 
 	}
@@ -80,9 +74,6 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 			else if(onRight(begin)){
 				return false;
 			}
-			else {
-				begin += 9;
-			}
 		} 
 	}
 
@@ -104,9 +95,6 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 			}
 			else if(onLeft(begin)){
 				return false;
-			}
-			else {
-				begin -= 9;
 			}
 		} 
 	}
