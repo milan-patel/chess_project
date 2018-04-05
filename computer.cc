@@ -7,7 +7,6 @@
 #include <ctime>
 #include <sstream>
 #include <vector>
-#include <iostream>
 
 static std::string convert(int index){
 	std::string s;
@@ -41,35 +40,44 @@ void Comp::generateMove(Board *b, std::string &first, std::string &last){
 void Comp::genMove1(Board *b, std::string &first, std::string &last){
 	std::vector <Piece *> myTeam; 
 	for(int i=0; i<64; ++i){
-		if(b->getBoard()[i]->isWhite() == isPlayerWhite()){
+		if(!b->getBoard()[i]->isEmpty() && b->getBoard()[i]->isWhite() == isPlayerWhite()){
 			myTeam.push_back(b->getBoard()[i]);
 		}
 	}
 	std::srand(std::time(nullptr)); // use current time as seed
 	int start = std::rand()/((RAND_MAX + 1u)/myTeam.size());
+	Piece *p = myTeam[start];
 	int end = -1;
 	if(isPlayerWhite()){
-		while(end == -1){	
-			for(int j=0; j<64; ++j){
-				if(b->testMove(convert(start),convert(j))){
+		while(true){	
+			for(int j=63; j>-1; --j){
+				if(b->testMove(convert(p->posn()),convert(j))){
 					end = j;
 					break; 
 				}
 			}
+			if(end != -1){
+				break;
+			}
 			start = std::rand()/((RAND_MAX + 1u)/myTeam.size());
+			p = myTeam[start];
 		}
 	} else {
-		while(end == -1){	
+		while(true){	
 			for(int k=0; k<64; ++k){
-				if(b->testMove(convert(start),convert(k))){
+				if(b->testMove(convert(p->posn()),convert(k))){
 					end = k;
 					break; 
 				}
 			}
+			if(end != -1){
+				break;
+			}
 			start = std::rand()/((RAND_MAX + 1u)/myTeam.size());
+			p = myTeam[start];
 		}
 	}
-	first = convert(start);
+	first = convert(p->posn());
 	last = convert(end);
 	return;
 }

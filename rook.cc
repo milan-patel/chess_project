@@ -22,7 +22,7 @@ bool Rook::canMove(const std::string &start, const std::string &end, Piece ** b)
 		if (b[begin]->isEmpty()) {
 			return true;
 		}
-		else if (b[begin]->isWhite() == isWhite()) {
+		else if (!b[begin]->isEmpty() && b[begin]->isWhite() == isWhite()) {
 			return false;
 		}
 		else {
@@ -42,7 +42,7 @@ bool Rook::canMove(const std::string &start, const std::string &end, Piece ** b)
 		if (b[begin]->isEmpty()) {
 			return true;
 		}
-		else if (b[begin]->isWhite() == isWhite()) {
+		else if (!b[begin]->isEmpty() && b[begin]->isWhite() == isWhite()) {
 			return false;
 		}
 		else {
@@ -62,7 +62,7 @@ bool Rook::canMove(const std::string &start, const std::string &end, Piece ** b)
 		if (b[begin]->isEmpty()) {
 			return true;
 		}
-		else if (b[begin]->isWhite() == isWhite()) {
+		else if (!b[begin]->isEmpty() && b[begin]->isWhite() == isWhite()) {
 			return false;
 		}
 		else {
@@ -82,7 +82,7 @@ bool Rook::canMove(const std::string &start, const std::string &end, Piece ** b)
 		if (b[begin]->isEmpty()) {
 			return true;
 		}
-		else if (b[begin]->isWhite() == isWhite()) {
+		else if (!b[begin]->isEmpty() && b[begin]->isWhite() == isWhite()) {
 			return false;
 		}
 		else {
