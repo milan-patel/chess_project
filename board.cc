@@ -499,12 +499,13 @@ bool Board::isP1computer(){
 	return p1->isComputer();
 }
 
-bool Board::isP2computer(){// checks if P2 is a computer
+bool Board::isP2computer(){ // checks if P2 is a computer
 	return p2->isComputer();
 }
 
-void Board::makeCompMove(string &start, string &last){
-	cout << "this is messed up" << endl;
+void Board::makeCompMove(){
+	string start;
+	string last;
 	if(isTurnWhite){
 		p1->generateMove(this,start,last);
 	} else {

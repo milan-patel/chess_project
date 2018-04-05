@@ -1,8 +1,6 @@
 #include "board.h"
 #include "bishop.h"
 #include <string>
-#include <iostream>
-
 // static helpers 
 static bool onRight(int i){
 	return (7 == (i % 8)) ? true : false;

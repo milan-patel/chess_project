@@ -73,13 +73,13 @@ void game(Board *b){
 	cout << b->sendToDisplay();
 	if(b->isP1computer() && b->isP2computer()){
 		while(!b->isGameOver()){
-			b->makeCompMove(start,end);
+			b->makeCompMove();
 			cout << b->sendToDisplay();
 		}
 	} else if(b->isP1computer()){
 		while(true){
 			if(b->getTurnStatus()){
-				b->makeCompMove(start,end);
+				b->makeCompMove();
 			} else {
 				cin >> action;
 				if (action == "move") {
@@ -108,13 +108,13 @@ void game(Board *b){
 				else if (action == "resign") {
 						b->endGame("black resigns");
 						break;
-					}
+				}
 			}
 		}
 	} else if(b->isP2computer()){
 		while(true){
 			if(!b->getTurnStatus()){
-				b->makeCompMove(start,end);
+				b->makeCompMove();
 			} else {
 				cin >> action;
 				if (action == "move") {
@@ -223,7 +223,7 @@ void players(Board *b){
 		ip2 = temp - '0';
 	}
 
-	if (ip1 != 0 && ip2 != 0) {
+	if (ip1 != 0 || ip2 != 0) {
 		b->newPlayers(ip1,ip2);	
 	}
 }
@@ -232,8 +232,7 @@ int main () {
 	Board *b = new Board(0,0);
 	string cmd;
 
-	while (!cin.eof()) {
-		cin >> cmd;
+	while (cin >> cmd) {
 
 		// setup command
 		if (cmd == "setup") {
