@@ -7,6 +7,7 @@
 #include <ctime>
 #include <sstream>
 #include <vector>
+#include <iostream>
 
 static std::string convert(int index){
 	std::string s;
@@ -27,9 +28,13 @@ void Comp::generateMove(Board *b, std::string &first, std::string &last){
 	if(1 == level){
 		genMove1(b,first, last);
 	} else if(2 == level){
+		genMove1(b,first, last);
 	} else if(3 == level){
+		genMove1(b,first, last);
 	} else if(4 == level){
+		genMove1(b,first, last);
 	} else{
+		genMove1(b,first, last);
 	}
 }
 

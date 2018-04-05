@@ -62,7 +62,7 @@ public:
 	// 
 	bool isP1computer(); // checks if P1 is a computer
 	bool isP2computer(); // checks if P2 is a computer
-	void makeCompMove(std::string &start, std::string &last);
+	void makeCompMove();
 
 	std::string findKing(bool isWhite) const;
 };
