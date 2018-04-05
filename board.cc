@@ -273,14 +273,19 @@ void Board::endGame(string cmd){
 	gameOver = true;
 	if(cmd == "black"){
 		s->win(false);
+		gd->updateScore(false,false);
 	} else if (cmd == "white"){
 		s->win(true);
+		gd->updateScore(true,false);
 	} else if (cmd == "white resigns"){
 		s->resign(true);
+		gd->updateScore(false,false);
 	} else if (cmd == "black resigns"){
 		s->resign(false);
+		gd->updateScore(true,false);
 	} else if (cmd == "draw"){
 		s->tie();
+		gd->updateScore(false,true);
 	}
 	clearBoard();
 	gd->clearBoard();
