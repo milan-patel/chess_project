@@ -28,7 +28,7 @@ GraphicsDisplay::GraphicsDisplay(){
         string blkScore = blkStream.str();
         whtStream<<fixed<<setprecision(1)<<whiteScore;
         string whtScore = whtStream.str();
-        string s = "B: " + blkScore + " W: " + whtScore;
+        string s = "B: " + blkScore + "  W: " + whtScore;
 	xw->drawBigString(0,50,s,Xwindow::Black);
 }
 GraphicsDisplay::~GraphicsDisplay(){
@@ -223,7 +223,7 @@ void GraphicsDisplay::updateScore(bool isWhiteWinner, bool isStalemate){
 	string blkScore = blkStream.str();
 	whtStream<<fixed<<setprecision(1)<<whiteScore;
 	string whtScore = whtStream.str();
-	string s = "B:" + blkScore + "W:" + whtScore;
+	string s = "B:" + blkScore + "  W:" + whtScore;
 	xw->drawBigString(0,50,s,Xwindow::Black);
 }
 void GraphicsDisplay::updateTurn(bool white){
