@@ -21,7 +21,6 @@ class GraphicsDisplay{
 	const int cellsize = windowsize/gridsize; //62.5 pixels for each cell.
 	const int yPadding = cellsize/2;
 	const int xPadding = cellsize/4;
-	const std::string font ="-adobe-helvetica-medium-o-normal--24-240-75-75-p-130-iso8859-14"; // font for score and turn are subject to change.
 	//methods
 	int findRectangleColour(int col, int row);
 	int findPieceColour(char piece);
