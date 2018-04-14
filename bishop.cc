@@ -107,3 +107,4 @@ bool Bishop::canMove(const std::string &start,const std::string &end, Piece ** b
 char Bishop::Type() const {
 	return isWhite() ? 'B' : 'b';
 }
+

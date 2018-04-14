@@ -583,3 +583,4 @@ void Board::makeCompMove(){
 	}
 	move(start,last);
 }
+
